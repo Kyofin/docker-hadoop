@@ -1,4 +1,7 @@
 # Standalone Hadoop
+## 前提
+docker要设置内存大于8G。
+
 ## 介绍
 使用Standalone Hadoop可以在本地快速搭建hadoop环境，方便多版本hadoop调试开发。
 `Dockerfile_spark3`内置服务版本：
