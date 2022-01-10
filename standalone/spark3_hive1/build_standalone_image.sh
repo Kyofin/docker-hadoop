@@ -6,4 +6,4 @@ cd ${DIR}
 echo "build image in dir "${DIR}
 
 echo "start build Hadoop docker image"
-docker build -f Dockerfile_spark3 -t spark3-all-in-one .
+docker build -f Dockerfile_spark3_hive1 -t spark3-hive1-all-in-one .
