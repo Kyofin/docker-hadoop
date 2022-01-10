@@ -101,6 +101,21 @@ RUN cp $HIVE_HOME/lib/datanucleus-rdbms-*.jar $SPARK_HOME/dependency_libs/hive
 RUN cp $HIVE_HOME/lib/jdo-api-*.jar $SPARK_HOME/dependency_libs/hive
 RUN echo "spark.sql.hive.metastore.jars    $(echo $SPARK_HOME)/dependency_libs/hive/*" >> $SPARK_CONF_DIR/spark-defaults.conf
 RUN echo "spark.sql.hive.metastore.version   1.2.1" >> $SPARK_CONF_DIR/spark-defaults.conf
+# iceberg in spark3
+RUN  mkdir $SPARK_HOME/dependency_libs/iceberg \
+&& wget https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark3-runtime/0.12.1/iceberg-spark3-runtime-0.12.1.jar \
+&& cp iceberg-spark3-runtime-0.12.1.jar  $SPARK_HOME/dependency_libs/iceberg
+# spark会默认启动两个catalog。spark_catalog用于hive表管理，local用于Iceberg管理
+RUN echo "spark.sql.extensions   org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.spark_catalog    org.apache.iceberg.spark.SparkSessionCatalog" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.spark_catalog.type    hadoop" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.spark_catalog.warehouse    /apps/iceberg/warehouse" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.local    org.apache.iceberg.spark.SparkCatalog" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.local.type    hadoop" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.sql.catalog.local.warehouse    /apps/iceberg_me/warehouse" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.driver.extraClassPath     $(echo $SPARK_HOME)/dependency_libs/iceberg/iceberg-spark3-runtime-0.12.1.jar" >> $SPARK_CONF_DIR/spark-defaults.conf
+RUN echo "spark.executor.extraClassPath     $(echo $SPARK_HOME)/dependency_libs/iceberg/iceberg-spark3-runtime-0.12.1.jar" >> $SPARK_CONF_DIR/spark-defaults.conf
+
 
 # setup kafka
 RUN wget https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz \
