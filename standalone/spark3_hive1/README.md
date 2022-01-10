@@ -59,7 +59,8 @@ apache-maven-3.6.1     hadoop-2.7.3          kafka_2.11-1.1.1  spark-3.1.2-bin-h
 ```
 
 ## 已知问题
-使用spark-sql进入终端后，可以正常建hive表，删表。但是在第一次执行`insert into t1 values(1);`语句时，会出现下面错误，但是不影响数据插入。
+
+使用spark-sql进入终端后，可以正常建hive表，删hive表。但是在第一次执行`insert into t1 values(1);`语句时，会出现下面错误，但是不影响数据插入。
 ```shell script
 22/01/10 04:57:30 WARN session.SessionState: METASTORE_FILTER_HOOK will be ignored, since hive.security.authorization.manager is set to instance of HiveAuthorizerFactory.
 22/01/10 04:57:31 WARN conf.HiveConf: HiveConf of name hive.stats.jdbc.timeout does not exist

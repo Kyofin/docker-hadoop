@@ -88,6 +88,7 @@ RUN wget https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK
     && cp $SPARK_HOME/yarn/*.jar $HADOOP_HOME/share/hadoop/yarn/lib
 RUN cp $HIVE_HOME/lib/mysql-connector-java-5.1.24.jar $SPARK_HOME/jars
 COPY conf/spark/* $SPARK_CONF_DIR/
+# spark3 Compatible with Hive 1.2.1
 RUN mkdir -p $SPARK_HOME/dependency_libs/hive
 RUN cp $HIVE_HOME/lib/hive-exec-*.jar $SPARK_HOME/dependency_libs/hive
 RUN cp $HIVE_HOME/lib/hive-metastore-*.jar $SPARK_HOME/dependency_libs/hive
