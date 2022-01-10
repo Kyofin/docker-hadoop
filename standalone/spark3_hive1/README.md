@@ -71,9 +71,21 @@ bin/spark-shell  --master local
 
 使用名为spark_catalog的catalog【org.apache.iceberg.spark.SparkSessionCatalog】管理hive表。
 
+```scala
+scala> spark.sql("create table hive_t1 (id int)")
+scala> spark.sql("insert into hive_t1 values(1),(2)")
+scala> spark.table("hive_t1").show
+```
+
 ![image-20220110190358053](http://image-picgo.test.upcdn.net/img/20220110190358.png)
 
 使用名为local的catalog【org.apache.iceberg.spark.SparkCatalog】管理Iceberg表。
+
+```scala
+scala> spark.sql("create table local.default.ice_t1 (id int)")
+scala> spark.sql("insert into local.default.ice_t1 values(1),(2),(34)")
+scala> spark.table("local.default.ice_t1").show
+```
 
 ![image-20220110190505570](http://image-picgo.test.upcdn.net/img/20220110190505.png)
 
