@@ -1,0 +1,66 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Docker image with Hadoop/Spark/Hive/ZK/Kafka installed
+FROM centos:7.9.2009
+
+ENV ZK_VERSION 3.4.6
+ENV KAFKA_VERSION 1.1.1
+
+ENV JAVA_HOME /home/admin/jdk1.8.0_141
+ENV ZK_HOME /home/admin/zookeeper-$ZK_VERSION
+ENV KAFKA_HOME /home/admin/kafka_2.11-$KAFKA_VERSION
+ENV PATH $PATH:$JAVA_HOME/bin:$ZK_HOME/bin:$KAFKA_HOME/bin
+
+USER root
+
+WORKDIR /home/admin
+
+# install tools
+RUN yum -y install lsof.x86_64 wget.x86_64 tar.x86_64 git.x86_64 which.x86_64 net-tools.x86_64  unzip.x86_64
+
+# setup jdk
+RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz" \
+    && tar -zxvf /home/admin/jdk-8u141-linux-x64.tar.gz \
+    && rm -f /home/admin/jdk-8u141-linux-x64.tar.gz
+
+# setup kafka
+RUN wget https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz \
+    && tar -zxvf /home/admin/kafka_2.11-$KAFKA_VERSION.tgz \
+    && rm -f /home/admin/kafka_2.11-$KAFKA_VERSION.tgz
+
+# # setup zk
+RUN wget https://archive.apache.org/dist/zookeeper/zookeeper-$ZK_VERSION/zookeeper-$ZK_VERSION.tar.gz \
+    && tar -zxvf /home/admin/zookeeper-$ZK_VERSION.tar.gz \
+    && rm -f /home/admin/zookeeper-$ZK_VERSION.tar.gz \
+    && mkdir -p /data/zookeeper
+COPY conf/zk/zoo.cfg $ZK_HOME/conf
+
+# setup gendata
+RUN mkdir /home/admin/gendata
+COPY conf/gendata/gen-data.sh /home/admin/gendata
+COPY conf/gendata/source.temp /home/admin/gendata
+COPY conf/gendata/streaming-data.sh /home/admin/gendata
+RUN chmod u+x /home/admin/gendata/gen-data.sh
+RUN chmod u+x /home/admin/gendata/streaming-data.sh
+
+
+
+COPY ./entrypoint_kafka.sh /home/admin/entrypoint_kafka.sh
+RUN chmod u+x /home/admin/entrypoint_kafka.sh
+
+ENTRYPOINT ["/home/admin/entrypoint_kafka.sh"]
