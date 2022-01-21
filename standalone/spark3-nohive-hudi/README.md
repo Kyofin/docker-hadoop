@@ -31,8 +31,8 @@ docker run -d \
 -p 8032:8032 \
 -p 8042:8042 \
 -p 2181:2181 \
---name spark3-all-in-one \
-spark3-all-in-one:latest
+--name spark3-nohive-hudi \
+spark3-nohive-hudi:latest
 ```
 MYSQL默认账号密码：root/123456。
 
@@ -42,18 +42,7 @@ MYSQL默认账号密码：root/123456。
 
 ## 进入容器内调试
 ```shell script
-> docker exec -it spark3-all-in-one bash
-[root@e53232ca8dc3 admin]# ls
-apache-hive-2.3.9-bin  entrypoint_hadoop.sh  jdk1.8.0_141      mysql80-community-release-el7-3.noarch.rpm  zookeeper-3.4.6
-apache-maven-3.6.1     hadoop-2.7.3          kafka_2.11-1.1.1  spark-3.1.2-bin-hadoop2.7
+>  docker exec -it spark3-nohive-hudi bash
 
-[root@e53232ca8dc3 admin]# jps
-289 ResourceManager
-145 NameNode
-450 RunJar
-200 DataNode
-345 NodeManager
-410 JobHistoryServer
-637 Jps
 
 ```
