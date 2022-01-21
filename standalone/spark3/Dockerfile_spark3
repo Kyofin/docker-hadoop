@@ -41,14 +41,15 @@ USER root
 WORKDIR /home/admin
 
 # install tools
-RUN yum -y install lsof.x86_64 wget.x86_64 tar.x86_64 git.x86_64 which.x86_64 net-tools.x86_64  unzip.x86_64
+RUN yum -y install lsof.x86_64 wget.x86_64 tar.x86_64 git.x86_64 which.x86_64 net-tools.x86_64  unzip.x86_64 numactl libaio   perl net-tools
 
 #install mysql
-RUN wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm \
-    && rpm -Uvh mysql80-community-release-el7-3.noarch.rpm \
-    && yum-config-manager --disable mysql80-community \
-    && yum-config-manager --enable mysql57-community \
-    && yum install -y mysql-community-server.x86_64 mysql-community-client.x86_64
+RUN wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.37-1.el7.x86_64.rpm-bundle.tar \
+    && tar -xvf mysql-5.7.37-1.el7.x86_64.rpm-bundle.tar \
+    && rpm -ivh mysql-community-common-5.7.37-1.el7.x86_64.rpm \
+    && rpm -ivh mysql-community-libs-5.7.37-1.el7.x86_64.rpm \
+    && rpm -ivh mysql-community-client-5.7.37-1.el7.x86_64.rpm && rpm -ivh mysql-community-server-5.7.37-1.el7.x86_64.rpm
+
 
 # install mvn
 RUN wget https://archive.apache.org/dist/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz \
