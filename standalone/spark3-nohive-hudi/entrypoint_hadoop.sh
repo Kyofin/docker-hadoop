@@ -58,6 +58,7 @@ function check_hdfs_usability() {
     ((time_left = 60))
     while ((time_left > 0)); do
         hdfs dfs -test -d /tmp
+        echo "Use hdfs cli to test...."
         started_hdfs=$?
         if [[ $started_hdfs -eq 0 ]]; then
             break
@@ -80,7 +81,7 @@ then
 #    hdfs dfs -mkdir -p /kylin4/spark-history
 #    hdfs dfs -mkdir -p /spark_jars
 #    hdfs dfs -put -f $SPARK_HOME/jars/* hdfs://localhost:9000/spark_jars/
-    spark-sql   -f /home/admin/spark-hudi.sql
+    spark-sql --master  yarn  -f /home/admin/spark-hudi.sql
 
     start-thriftserver.sh
 fi
