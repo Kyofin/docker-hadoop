@@ -1,3 +1,15 @@
+drop table hudi_cow_nonpcf_tbl;
+
+drop table hudi_ctas_cow_nonpcf_tbl;
+
+drop table hudi_ctas_cow_pt_tbl;
+
+drop table hudi_mor_tbl;
+
+drop table merge_source;
+
+drop table merge_source2;
+
 -- create a cow table, with default primaryKey 'uuid' and without preCombineField provided
 create table hudi_cow_nonpcf_tbl (
   uuid int,
