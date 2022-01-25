@@ -4,6 +4,7 @@ docker要设置内存大于8G。
 
 ## 介绍
 该容器会集成spark3，元数据会用spark3内置的hive来存储到mysql中。并且spark3会集成JuiceFS，读写的数据数据都会通过JuiceFS，分解到Minio中
+该容器中的spark和hdfs客户端都会以Juice作为defaultFS。
 
 `Dockerfile_spark3-nohive-hudi`内置服务版本：
 - Jdk 1.8
@@ -17,7 +18,6 @@ docker要设置内存大于8G。
 
 ## 启动容器
 一旦镜像构建完成，可以启动容器。启动容器后，会自动启动服务：
-- NameNode, DataNode
 - ResourceManager, NodeManager
 - Minio
 
