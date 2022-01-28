@@ -45,6 +45,18 @@ $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
 # start minio
 nohup $MINIO_HOME/minio  server --address 0.0.0.0:9001  --console-address  0.0.0.0:9002  $MINIO_HOME/data > $MINIO_HOME/minio.log 2>&1 &
 
+while true
+do
+  curl http://localhost:9001
+  if [ $? -eq 0 ]
+  then
+    echo "minio is ready."
+    break
+  fi
+  echo "try to connect minio api port fail...."
+  sleep 5s
+done
+
 # setup juicefs
 juicefs format --storage minio \
     --bucket http://localhost:9001/myjfs \
