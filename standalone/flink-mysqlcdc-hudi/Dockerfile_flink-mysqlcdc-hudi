@@ -46,6 +46,7 @@ RUN wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.37-1.el7.x86_64.rp
     && rpm -ivh mysql-community-client-5.7.37-1.el7.x86_64.rpm && rpm -ivh mysql-community-server-5.7.37-1.el7.x86_64.rpm
 
 COPY conf/mysql/my.cnf /etc/
+COPY script/inventory.sql /home/admin/
 
 
 # setup jdk
@@ -75,12 +76,16 @@ COPY conf/spark/* $SPARK_CONF_DIR/
 RUN wget https://archive.apache.org/dist/flink/flink-$FLINK_VERSION/flink-$FLINK_VERSION-bin-scala_2.11.tgz \
     && tar -zxvf /home/admin/flink-$FLINK_VERSION-bin-scala_2.11.tgz \
     && rm -f /home/admin/flink-$FLINK_VERSION-bin-scala_2.11.tgz
+COPY lib/flink-sql-connector-mysql-cdc-2.1.1.jar $FLINK_HOME/lib
+COPY conf/flink/flink-conf.yaml $FLINK_HOME/conf
+COPY conf/flink/workers $FLINK_HOME/conf
 
 
 # setup hudi
 COPY lib/hudi-spark3-bundle_2.12-0.10.0.jar $SPARK_HOME/jars
 COPY lib/hudi-flink-bundle_2.11-0.10.0.jar $FLINK_HOME/lib
 COPY script/spark-hudi.sql /home/admin/
+COPY script/mysqlcdc2hudi.sql /home/admin/
 
 
 COPY ./entrypoint_hadoop.sh /home/admin/entrypoint_hadoop.sh

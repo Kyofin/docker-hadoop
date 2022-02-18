@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 echo "127.0.0.1 sandbox sandbox.hortonworks.com" >> /etc/hosts
+export HADOOP_CLASSPATH=`$HADOOP_HOME/bin/hadoop classpath`
+
 
 # clean pid files
 rm -f /tmp/*.pid
@@ -32,7 +34,9 @@ then
     mysql --connect-expired-password -u root -p$mysql_init_password -e "set global validate_password_policy=0;set global validate_password_length=6;alter user user() identified by '123456';"
     mysql -uroot -p123456 -e "CREATE DATABASE IF NOT EXISTS kylin4 default charset utf8 COLLATE utf8_general_ci;"
     mysql -uroot -p123456 -e "grant all privileges on *.* to root@'%' identified by '123456';FLUSH   PRIVILEGES;"
+    mysql -uroot -p123456 -e "source /home/admin/inventory.sql"
 fi
+
 
 # start hdfs
 if [ ! -f "/home/admin/first_run" ]
@@ -73,6 +77,9 @@ function check_hdfs_usability() {
     fi
 }
 
+# start flink standalone cluster
+/home/admin/flink-1.13.5/bin/start-cluster.sh
+
 if [ ! -f "/home/admin/first_run" ]
 then
     # check hdfs usability first if hdfs service was not started normally
@@ -82,7 +89,7 @@ then
 #    hdfs dfs -mkdir -p /spark_jars
 #    hdfs dfs -put -f $SPARK_HOME/jars/* hdfs://localhost:9000/spark_jars/
 #    spark-sql --master  yarn  -f /home/admin/spark-hudi.sql
-
+     /home/admin/flink-1.13.5/bin/sql-client.sh embedded -f /home/admin/mysqlcdc2hudi.sql
 #    start-thriftserver.sh
 fi
 
