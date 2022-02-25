@@ -81,8 +81,9 @@ COPY conf/flink/flink-conf.yaml $FLINK_HOME/conf
 COPY conf/flink/workers $FLINK_HOME/conf
 
 
-# setup hudi
+# setup hudi iceberg
 COPY lib/hudi-spark3-bundle_2.12-0.10.0.jar $SPARK_HOME/jars
+COPY lib/iceberg-spark-runtime-3.1_2.12-0.13.1.jar   $SPARK_HOME/jars
 COPY lib/hudi-flink-bundle_2.11-0.10.0.jar $FLINK_HOME/lib
 COPY lib/iceberg-flink-runtime-1.13-0.13.1.jar $FLINK_HOME/lib
 COPY script/spark-hudi.sql /home/admin/

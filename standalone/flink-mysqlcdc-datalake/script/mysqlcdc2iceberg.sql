@@ -28,6 +28,9 @@ CREATE TABLE `hadoop_catalog`.`default`.`t_products`(
   description STRING,
   weight float,
   PRIMARY KEY (id) NOT ENFORCED
+)WITH (
+    'format-version' = '2'                          -- iceberg表版本，可选1，2
+   , 'write.upsert.enabled' = 'true'                 -- 开启upsert
 );
 
 

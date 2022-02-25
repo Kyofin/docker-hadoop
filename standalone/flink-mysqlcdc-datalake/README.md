@@ -61,9 +61,9 @@ update products set weight =2222 where  id = 999;
 delete from products where id = 999;
 
 ```
-执行`/home/admin/flink-1.13.5/bin/sql-client.sh embedded `。
 
-验证mysqlcdc写Iceberg 效果
+####  用flinksql验证mysqlcdc写Iceberg效果
+执行`/home/admin/flink-1.13.5/bin/sql-client.sh embedded `。
 ```sql
 CREATE CATALOG hadoop_catalog WITH (
   'type'='iceberg',
@@ -76,10 +76,21 @@ select * from `hadoop_catalog`.`default`.`t_products`;
 
 
 ```
-可以看到，Iceberg不会将cdc事件进行upsert实现，都是append的，所有会有重复数据。
-![](http://image-picgo.test.upcdn.net/img/20220218190535.png)
+可以看到事件都能实时还原。
+![](http://image-picgo.test.upcdn.net/img/20220225153851.png)
 
-验证mysqlcdc写hudi 效果
+####  用sparkshell验证mysqlcdc写Iceberg效果
+执行`/home/admin/spark-3.1.2-bin-hadoop2.7/bin/spark-shell `。
+```shell script
+val df = spark.read.format("iceberg").load("/iceberg/warehouse/path/default/t_products")
+df.show
+```
+效果如下：
+![](http://image-picgo.test.upcdn.net/img/20220225153758.png)
+
+
+#### 用flinksql验证mysqlcdc写hudi效果
+执行`/home/admin/flink-1.13.5/bin/sql-client.sh embedded `。
 ```sql
 CREATE TABLE t_products(
  id INT ,
@@ -95,8 +106,13 @@ CREATE TABLE t_products(
 
 select * from  t_products;
 ```
+![](http://image-picgo.test.upcdn.net/img/20220218192429.png)
 
-## 
+#### 用sparksql验证mysqlcdc写hudi效果
+执行`/home/admin/spark-3.1.2-bin-hadoop2.7/bin/spark-sql `。
 
-
-## 
+```sql
+create temp view t_products using hudi options('path'='hdfs:///flink/hudi/t_products');
+select * from t_products;
+```
+![](http://image-picgo.test.upcdn.net/img/20220225154237.png)
