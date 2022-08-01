@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resourcemanager
+  namespace: k8s-bigdata
+  labels:
+    app: resourcemanager
+spec:
+  containers:
+    - image: vpemfh7/hadoop-resourcemanager
+      name: resourcemanager
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: SERVICE_PRECONDITION
+          value: "namenode:50070 namenode:9000 datanode:8081"
+      envFrom:
+        - configMapRef:
+            name: hadoop-env
+      ports:
+        - containerPort: 8088
+        - containerPort: 8031
+        - containerPort: 8032
+        - containerPort: 8030
+      readinessProbe:
+        exec:
+          command:
+            - curl
+            - -sI
+            - datanode:8081
+        initialDelaySeconds: 2
+        periodSeconds: 3

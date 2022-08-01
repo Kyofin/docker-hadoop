@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: namenode
+  namespace: k8s-bigdata
+spec:
+  selector:
+    app: namenode
+  clusterIP: None
+  externalName: namenode
+  ports:
+    - name: web-ui
+      port: 9870
+      targetPort: 9870
+    - name: namenode-ipc
+      port: 9000
+      targetPort: 9000
+    - name: web-ui-spark
+      port: 8080
+      targetPort: 8080
+    - name: master-spark
+      port: 7077
+      targetPort: 7077
+    - name: master-rest-spark
+      port: 6066
+      targetPort: 6066

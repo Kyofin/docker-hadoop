@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: resourcemanager
+  namespace: k8s-bigdata
+spec:
+  selector:
+    app: resourcemanager
+  clusterIP: None
+  externalName: resourcemanager
+  ports:
+    - name: yarn-web-ui
+      port: 8088
+      targetPort: 8088
+    - name: yarn-scheduler
+      port: 8030
+      targetPort: 8030
+    - name: yarn-jobtracker
+      port: 8031
+      targetPort: 8031
+    - name: yarn
+      port: 8032
+      targetPort: 8032

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nodemanager
+  namespace: k8s-bigdata
+  labels:
+    app: nodemanager
+spec:
+  serviceName: "nodemanager"
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nodemanager
+  template:
+    metadata:
+      labels:
+        app: datanode
+    spec:
+      containers:
+        - image: vpemfh7/hadoop-nodemanager
+          name: nodemanager
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 45454
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SERVICE_PRECONDITION
+              value: "namenode:50070 namenode:9000 resourcemanager:8088 $(POD_NAME):50020"
+          envFrom:
+            - configMapRef:
+                name: hadoop-env
+      volumes:
+        - name: vol

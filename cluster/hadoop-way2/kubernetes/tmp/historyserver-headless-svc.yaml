@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: historyserver
+  namespace: k8s-bigdata
+spec:
+  selector:
+    app: historyserver
+  clusterIP: None
+  externalName: historyserver
+  ports:
+    - name: web-ui
+      port: 19888
+      targetPort: 19888
+    - name: ipc
+      port: 10200
+      targetPort: 10200
+    - name: other-web-ui
+      port: 8188
+      targetPort: 8188

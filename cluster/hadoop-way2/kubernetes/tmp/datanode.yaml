@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: datanode
+  namespace: k8s-bigdata
+  labels:
+    app: datanode
+spec:
+  serviceName: "datanode"
+  replicas: 4
+  selector:
+    matchLabels:
+      app: datanode
+  template:
+    metadata:
+      labels:
+        app: datanode
+    spec:
+      containers:
+        - image: vpemfh7/hadoop-datanode
+          name: datanode
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SERVICE_PRECONDITION
+              value: "namenode:50070 namenode:9000 namenode:8080"
+            - name: NUM_CORES
+              value: "4"
+          envFrom:
+            - configMapRef:
+                name: hadoop-env
+          volumeMounts:
+            - mountPath: /hadoop/dfs/data
+              name: vol
+          ports:
+            - containerPort: 8081
+            - containerPort: 4040
+            - containerPort: 50020
+      volumes:
+        - name: vol

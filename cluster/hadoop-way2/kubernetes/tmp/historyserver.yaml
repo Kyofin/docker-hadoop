@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: historyserver
+  namespace: k8s-bigdata
+  labels:
+    app: historyserver
+spec:
+  containers:
+    - image: vpemfh7/hadoop-historyserver
+      name: historyserver
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: SERVICE_PRECONDITION
+          value: "namenode:9000 namenode:50070 datanode:8081"
+      envFrom:
+        - configMapRef:
+            name: hadoop-env
+      ports:
+        - containerPort: 8188
+        - containerPort: 19888
+        - containerPort: 10200
+      volumeMounts:
+        - name: historyserver
+          mountPath: /hadoop/yarn/timeline
+  volumes:
+    - name: historyserver
