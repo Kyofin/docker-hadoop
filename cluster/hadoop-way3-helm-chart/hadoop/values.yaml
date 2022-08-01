@@ -24,7 +24,7 @@ hdfs:
         cpu: "1000m"
 
   dataNode:
-    replicas: 1
+    replicas: 3
 
     pdbMinAvailable: 1
 
