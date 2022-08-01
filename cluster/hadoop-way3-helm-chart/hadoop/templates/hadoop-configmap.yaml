@@ -32,8 +32,16 @@ data:
     cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
     if [[ "${HOSTNAME}" =~ "hdfs-nn" ]]; then
-      mkdir -p /root/hdfs/namenode
-      $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive
+
+      if [ -f /root/hdfs/namenode/current/VERSION ]
+      then
+        echo "==============The file exist , namenode no need format ==============="
+      else
+        echo "==============The file doesn't exist , namenode  need format ==============="
+        mkdir -p /root/hdfs/namenode
+        $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive
+      fi
+
       $HADOOP_PREFIX/sbin/hadoop-daemon.sh start namenode
     fi
 
