@@ -17,6 +17,15 @@ spec:
       app: {{ include "hadoop.name" . }}
       release: {{ .Release.Name }}
       component: hdfs-nn
+  volumeClaimTemplates:
+    - metadata:
+        name: dfs
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
   template:
     metadata:
       labels:
@@ -77,10 +86,4 @@ spec:
       - name: hadoop-config
         configMap:
           name: {{ include "hadoop.fullname" . }}
-      - name: dfs
-      {{- if .Values.persistence.nameNode.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ include "hadoop.fullname" . }}-hdfs-nn
-      {{- else }}
-        emptyDir: {}
-      {{- end }}
+
