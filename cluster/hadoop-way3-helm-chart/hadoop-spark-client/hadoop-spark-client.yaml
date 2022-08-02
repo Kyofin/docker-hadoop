@@ -13,7 +13,7 @@ spec:
       volumeMounts:
         - name: hadoop-conf
           mountPath: /opt/hadoop-conf/
-
+# todo 增加headless 使client模式能找到提交的节点， 增加env HADOOP_CONF_DIR
   volumes:
     - name: hadoop-conf
       configMap:
