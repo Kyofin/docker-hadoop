@@ -106,18 +106,43 @@ data:
             <value>hdfs://{{ include "hadoop.fullname" . }}-hdfs-nn:9000/</value>
             <description>NameNode URI</description>
         </property>
+
+     <property>
+        <name>fs.jfs.impl</name>
+        <value>io.juicefs.JuiceFileSystem</value>
+    </property>
+    <property>
+        <name>fs.AbstractFileSystem.jfs.impl</name>
+        <value>io.juicefs.JuiceFS</value>
+    </property>
+    <property>
+        <name>juicefs.meta</name>
+        <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(10.119.93.158:3306)/juicefs2_meta_minio</value>
+    </property>
+    <property>
+        <name>juicefs.cache-size</name>
+        <value>1024</value>
+    </property>
+    <property>
+        <name>juicefs.access-log</name>
+        <value>/tmp/juicefs.access.log</value>
+    </property>
+    <property>
+        <name>juicefs.cache-dir</name>
+        <value>/tmp/data/juicefs</value>
+    </property>
     </configuration>
 
   hdfs-site.xml: |
     <?xml version="1.0"?>
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
-    
+
 {{- if .Values.hdfs.webhdfs.enabled -}}
       <property>
           <name>dfs.webhdfs.enabled</name>
           <value>true</value>
-      </property> 
+      </property>
 {{- end -}}
 
       <property>

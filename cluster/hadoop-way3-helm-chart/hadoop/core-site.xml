@@ -1,0 +1,31 @@
+
+<configuration>
+    <property>
+        <name>fs.jfs.impl</name>
+        <value>io.juicefs.JuiceFileSystem</value>
+    </property>
+    <property>
+        <name>fs.AbstractFileSystem.jfs.impl</name>
+        <value>io.juicefs.JuiceFS</value>
+    </property>
+    <property>
+        <name>juicefs.meta</name>
+        <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(192.168.112.213:3306)/juicefs2_meta_minio</value>
+    </property>
+    <property>
+        <name>juicefs.cache-size</name>
+        <value>1024</value>
+    </property>
+    <property>
+        <name>juicefs.access-log</name>
+        <value>/tmp/juicefs.access.log</value>
+    </property>
+    <property>
+        <name>juicefs.cache-dir</name>
+        <value>/tmp/data/juicefs</value>
+    </property>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>jfs://myjfs</value>
+    </property>
+</configuration>

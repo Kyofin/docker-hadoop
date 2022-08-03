@@ -1,7 +1,7 @@
 # The base hadoop image to use for all components.
 # See this repo for image build details: https://github.com/Comcast/kube-yarn/tree/master/image
 image:
-  repository: danisla/hadoop
+  repository: registry.mufankong.top/bigdata/danisla/hadoop
   tag: 2.7.2
   pullPolicy: IfNotPresent
 
@@ -24,17 +24,17 @@ hdfs:
         cpu: "1000m"
 
   dataNode:
-    replicas: 3
+    replicas: 4
 
     pdbMinAvailable: 1
 
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "10m"
+        memory: "4096Mi"
+        cpu: "2000m"
       limits:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "4096Mi"
+        cpu: "2000m"
 
   webhdfs:
     enabled: false
@@ -55,7 +55,7 @@ yarn:
     pdbMinAvailable: 1
 
     # The number of YARN NodeManager instances.
-    replicas: 2
+    replicas: 3
 
     # Create statefulsets in parallel (K8S 1.7+)
     parallelCreate: false
@@ -64,11 +64,11 @@ yarn:
     # This should be tuned to fit your workload.
     resources:
       requests:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "8192Mi"
+        cpu: "2000m"
       limits:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "8192Mi"
+        cpu: "4000m"
 
 persistence:
   nameNode:
