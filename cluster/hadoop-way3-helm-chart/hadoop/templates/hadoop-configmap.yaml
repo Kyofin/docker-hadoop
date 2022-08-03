@@ -19,7 +19,7 @@ data:
 
     # Copy config files from volume mount
 
-    for f in slaves core-site.xml hdfs-site.xml mapred-site.xml yarn-site.xml; do
+    for f in slaves core-site.xml hdfs-site.xml mapred-site.xml yarn-site.xml httpfs-site.xml; do
       if [[ -e ${CONFIG_DIR}/$f ]]; then
         cp ${CONFIG_DIR}/$f $HADOOP_PREFIX/etc/hadoop/$f
       else
@@ -106,32 +106,102 @@ data:
             <value>hdfs://{{ include "hadoop.fullname" . }}-hdfs-nn:9000/</value>
             <description>NameNode URI</description>
         </property>
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>file:///root/hdfs/namenode</value>
+        <description>Abase for other temporary directories.</description>
+    </property>
+    <property>
+    <name>io.seqfile.local.dir</name>
+    <value>${hadoop.tmp.dir}/io/local</value>
+    </property>
 
-     <property>
-        <name>fs.jfs.impl</name>
-        <value>io.juicefs.JuiceFileSystem</value>
-    </property>
     <property>
-        <name>fs.AbstractFileSystem.jfs.impl</name>
-        <value>io.juicefs.JuiceFS</value>
+    <name>hadoop.proxyuser.hue.hosts</name>
+    <value>*</value>
     </property>
+
     <property>
-        <name>juicefs.meta</name>
-        <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(10.119.93.158:3306)/juicefs2_meta_minio</value>
+    <name>hadoop.proxyuser.hue.groups</name>
+    <value>*</value>
     </property>
+
     <property>
-        <name>juicefs.cache-size</name>
-        <value>1024</value>
+    <name>hadoop.proxyuser.root.hosts</name>
+    <value>*</value>
     </property>
+
     <property>
-        <name>juicefs.access-log</name>
-        <value>/tmp/juicefs.access.log</value>
+    <name>hadoop.proxyuser.root.groups</name>
+    <value>*</value>
     </property>
+
     <property>
-        <name>juicefs.cache-dir</name>
-        <value>/tmp/data/juicefs</value>
+    <name>hadoop.proxyuser.hadoop.hosts</name>
+    <value>*</value>
     </property>
-    </configuration>
+
+    <property>
+    <name>hadoop.proxyuser.hadoop.groups</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.httpfs.hosts</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.httpfs.groups</name>
+    <value>*</value>
+    </property>
+
+
+    <property>
+    <name>ipc.client.connect.max.retries</name>
+    <value>20</value>
+    </property>
+
+    <property>
+    <name>ipc.client.connect.retry.interval</name>
+    <value>60</value>
+    </property>
+
+    <property>
+    <name>ipc.maximum.data.length</name>
+    <value>69415731</value>
+    </property>
+
+    <property>
+    <name>io.compression.codecs</name>
+    <value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
+    </property>
+
+       <property>
+          <name>fs.jfs.impl</name>
+          <value>io.juicefs.JuiceFileSystem</value>
+      </property>
+      <property>
+          <name>fs.AbstractFileSystem.jfs.impl</name>
+          <value>io.juicefs.JuiceFS</value>
+      </property>
+      <property>
+          <name>juicefs.meta</name>
+          <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(10.119.93.158:3306)/juicefs2_meta_minio</value>
+      </property>
+      <property>
+          <name>juicefs.cache-size</name>
+          <value>1024</value>
+      </property>
+      <property>
+          <name>juicefs.access-log</name>
+          <value>/tmp/juicefs.access.log</value>
+      </property>
+      <property>
+          <name>juicefs.cache-dir</name>
+          <value>/tmp/data/juicefs</value>
+      </property>
+      </configuration>
 
   hdfs-site.xml: |
     <?xml version="1.0"?>
@@ -188,7 +258,78 @@ data:
       </property>
       <!-- /Bind to all interfaces -->
 
-    </configuration>
+     <!-- 关闭权限检查-->
+    <property>
+        <name>dfs.permissions.enable</name>
+        <value>false</value>
+    </property>
+    <!-- 预留一些，避免把磁盘写满-->
+    <property>
+    <name>dfs.datanode.du.reserved</name>
+    <value>104857600</value>
+    </property>
+    <!-- 读写并发高的时候，避免频繁的读写失败-->
+    <property>
+    <name>dfs.datanode.max.transfer.threads</name>
+    <value>8192</value>
+    </property>
+
+    <property>
+    <name>dfs.datanode.failed.volumes.tolerated</name>
+    <value>0</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.heartbeat.recheck-interval</name>
+    <value>45000</value>
+    </property>
+
+    <property>
+    <name>fs.trash.interval</name>
+    <value>7320</value>
+    </property>
+
+    <property>
+    <name>dfs.image.compress</name>
+    <value>true</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.num.checkpoints.retained</name>
+    <value>12</value>
+    </property>
+
+    <property>
+    <name>dfs.datanode.handler.count</name>
+    <value>50</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.handler.count</name>
+    <value>30</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.replication.max-streams</name>
+    <value>32</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.replication.max-streams-hard-limit</name>
+    <value>200</value>
+    </property>
+
+    <property>
+    <name>dfs.namenode.replication.work.multiplier.per.iteration</name>
+    <value>200</value>
+    </property>
+
+    <property>
+    <name>dfs.datanode.balance.bandwidthPerSec</name>
+    <value>10485760</value>
+    </property>
+
+      </configuration>
 
   mapred-site.xml: |
     <?xml version="1.0"?>
@@ -285,6 +426,40 @@ data:
     # "$bin"/yarn-daemons.sh --config $YARN_CONF_DIR  start nodemanager
     # start proxyserver
     "$bin"/yarn-daemon.sh --config $YARN_CONF_DIR  start proxyserver
+
+  httpfs-site.xml: |
+    <configuration>
+    <property>
+    <name>httpfs.proxyuser.hue.hosts</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>httpfs.proxyuser.hue.groups</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.hadoop.hosts</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.hadoop.groups</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.root.hosts</name>
+    <value>*</value>
+    </property>
+
+    <property>
+    <name>hadoop.proxyuser.root.groups</name>
+    <value>*</value>
+    </property>
+
+    </configuration>
 
   yarn-site.xml: |
     <?xml version="1.0"?>
