@@ -172,11 +172,6 @@ data:
     <value>69415731</value>
     </property>
 
-    <property>
-    <name>io.compression.codecs</name>
-    <value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
-    </property>
-
        <property>
           <name>fs.jfs.impl</name>
           <value>io.juicefs.JuiceFileSystem</value>
