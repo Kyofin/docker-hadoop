@@ -3,5 +3,6 @@ USER  root
 COPY spark-3.1.2-bin-hadoop2.7.tgz /opt
 RUN tar zxvf /opt/spark-3.1.2-bin-hadoop2.7.tgz -C /opt
 COPY sleep.sh /opt
+COPY juicefs-hadoop-1.0.0-rc2.jar /opt/spark-3.1.2-bin-hadoop2.7/jars
 RUN chmod +x /opt/sleep.sh
 ENTRYPOINT ["/opt/sleep.sh"]
