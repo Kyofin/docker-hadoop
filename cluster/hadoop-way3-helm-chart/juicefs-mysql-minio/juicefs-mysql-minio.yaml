@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: juicefs-mysql-minio
+#  namespace: bigdata-dev
+  labels:
+    app: juicefs-mysql-minio
+spec:
+  containers:
+    - name: juicefs-mysql-minio
+      image: registry.mufankong.top/bigdata/juicefs-mysql-minio:1.0.0-rc2
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: META_URL
+          value: "mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs2_meta_minio"
+        - name: STORAGE
+          value: "minio"
+        - name: BUCKET
+          value: "http://minio-01:9000/myjfs"
+        - name: ACCESS_KEY
+          value: "minio"
+        - name: SECRET_KEY
+          value: "minio123"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: juicefs-mysql-minio-svc
+#  namespace: bigdata-dev
+spec:
+  selector:
+    app: juicefs-mysql-minio
+  ports:
+    - name: web-ui
+      port: 9100
+
