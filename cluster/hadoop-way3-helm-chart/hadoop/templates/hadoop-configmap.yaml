@@ -182,7 +182,7 @@ data:
       </property>
       <property>
           <name>juicefs.meta</name>
-          <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(10.119.93.158:3306)/juicefs2_meta_minio</value>
+          <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs2_meta_minio</value>
       </property>
       <property>
           <name>juicefs.cache-size</name>
