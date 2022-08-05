@@ -343,6 +343,14 @@ data:
         <name>mapreduce.jobhistory.webapp.address</name>
         <value>{{ include "hadoop.fullname" . }}-yarn-rm-0.{{ include "hadoop.fullname" . }}-yarn-rm.{{ .Release.Namespace }}.svc.cluster.local:19888</value>
       </property>
+      <property>
+              <name>mapreduce.map.memory.mb</name>
+              <value>5120</value>
+        </property>
+        <property>
+              <name>mapreduce.reduce.memory.mb</name>
+              <value>5120</value>
+        </property>
     </configuration>
 
   slaves: |
