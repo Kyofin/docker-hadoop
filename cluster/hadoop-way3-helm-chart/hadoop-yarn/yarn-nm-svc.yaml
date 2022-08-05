@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bigdata-hadoop-yarn-nm
+  labels:
+    app: hadoop
+    component: yarn-nm
+    release: bigdata
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 8088
+    - name: web2
+      protocol: TCP
+      port: 8082
+    - name: api
+      protocol: TCP
+      port: 8042
+  selector:
+    app: hadoop
+    component: yarn-nm
+    release: bigdata
+  clusterIP: None
+  type: ClusterIP
+

@@ -1,0 +1,91 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: bigdata-hadoop-yarn-nm
+  labels:
+    app: hadoop
+    component: yarn-nm
+    release: bigdata
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hadoop
+      component: yarn-nm
+      release: bigdata
+  template:
+    metadata:
+      labels:
+        app: hadoop
+        component: yarn-nm
+        release: bigdata
+    spec:
+      volumes:
+        - name: hadoop-config
+          configMap:
+            name: bigdata-hadoop
+      containers:
+        - name: yarn-nm
+          image: 'registry.mufankong.top/bigdata/danisla/hadoop:2.7.2'
+          command:
+            - /bin/bash
+            - /tmp/hadoop-config/bootstrap.sh
+            - '-d'
+          ports:
+            - name: web
+              containerPort: 8088
+              protocol: TCP
+          env:
+            - name: MY_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: yarn-nm
+                  resource: limits.cpu
+                  divisor: '1'
+            - name: MY_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: yarn-nm
+                  resource: limits.memory
+                  divisor: 1M
+          resources:
+            limits:
+              cpu: '4'
+              memory: 8Gi
+            requests:
+              cpu: '2'
+              memory: 8Gi
+          volumeMounts:
+            - name: hadoop-config
+              mountPath: /tmp/hadoop-config
+          livenessProbe:
+            httpGet:
+              path: /node
+              port: 8042
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: /node
+              port: 8042
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+          imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 0
+      securityContext: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 5
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: hadoop
+                    component: yarn-nm
+                    release: bigdata
+                topologyKey: kubernetes.io/hostname
+  serviceName: bigdata-hadoop-yarn-nm
+

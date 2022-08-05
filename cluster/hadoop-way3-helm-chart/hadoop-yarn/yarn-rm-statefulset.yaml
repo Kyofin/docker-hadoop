@@ -1,0 +1,79 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: bigdata-hadoop-yarn-rm
+  labels:
+    app: hadoop
+    component: yarn-rm
+    release: bigdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hadoop
+      component: yarn-rm
+      release: bigdata
+  template:
+    metadata:
+      labels:
+        app: hadoop
+        component: yarn-rm
+        release: bigdata
+    spec:
+      volumes:
+        - name: hadoop-config
+          configMap:
+            name: bigdata-hadoop
+            defaultMode: 420
+      containers:
+        - name: yarn-rm
+          image: 'registry.mufankong.top/bigdata/danisla/hadoop:2.7.2'
+          command:
+            - /bin/bash
+            - /tmp/hadoop-config/bootstrap.sh
+            - '-d'
+          ports:
+            - name: web
+              containerPort: 8088
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: 10m
+              memory: 256Mi
+          volumeMounts:
+            - name: hadoop-config
+              mountPath: /tmp/hadoop-config
+          livenessProbe:
+            httpGet:
+              path: /ws/v1/cluster/info
+              port: 8088
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: /ws/v1/cluster/info
+              port: 8088
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+          imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 0
+      securityContext: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 5
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: hadoop
+                    component: yarn-rm
+                    release: bigdata
+                topologyKey: kubernetes.io/hostname
+  serviceName: bigdata-hadoop-yarn-rm
+  podManagementPolicy: OrderedReady
+
