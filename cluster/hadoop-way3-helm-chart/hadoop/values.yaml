@@ -37,7 +37,7 @@ hdfs:
         cpu: "2000m"
 
   webhdfs:
-    enabled: false
+    enabled: true
 
 yarn:
   resourceManager:
@@ -70,15 +70,3 @@ yarn:
         memory: "8192Mi"
         cpu: "4000m"
 
-persistence:
-  nameNode:
-    enabled: false
-    storageClass: "-"
-    accessMode: ReadWriteOnce
-    size: 50Gi
-
-  dataNode:
-    enabled: false
-    storageClass: "-"
-    accessMode: ReadWriteOnce
-    size: 200Gi
