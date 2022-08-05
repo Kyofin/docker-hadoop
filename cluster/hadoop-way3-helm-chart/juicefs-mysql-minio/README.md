@@ -3,5 +3,5 @@ docker run -p 9100:9100 -d -e  META_URL="mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLz
 -e   STORAGE="minio" \
 -e   BUCKET:="http://10.119.93.158:9000/myjfs2"  \
 -e   ACCESS_KEY="AKIAIOSFODNN7EXAMPLE"  \
--e   SECRET_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" juicefs-mysql-minio:1.0.0-rc2
+-e   SECRET_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" --privileged=true juicefs-mysql-minio:1.0.0-rc2-v2
 ```

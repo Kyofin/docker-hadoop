@@ -12,5 +12,5 @@ RUN tar -zxf "juicefs-1.0.0-rc2-linux-amd64.tar.gz" && \
 
 COPY bootstrap.sh /opt/bootstrap.sh
 RUN chmod +x /opt/bootstrap.sh
-
+RUN yum install -y fuse
 ENTRYPOINT ["/opt/bootstrap.sh"]

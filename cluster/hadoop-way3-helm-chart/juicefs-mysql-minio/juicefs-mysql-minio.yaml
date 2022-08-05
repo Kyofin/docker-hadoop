@@ -8,7 +8,9 @@ metadata:
 spec:
   containers:
     - name: juicefs-mysql-minio
-      image: registry.mufankong.top/bigdata/juicefs-mysql-minio:1.0.0-rc2
+      securityContext:
+        privileged: true
+      image: registry.mufankong.top/bigdata/juicefs-mysql-minio:1.0.0-rc2-v2
       imagePullPolicy: IfNotPresent
       env:
         - name: META_URL

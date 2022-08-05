@@ -9,5 +9,8 @@ juicefs format  --storage $STORAGE \
 $META_URL \
 myjfs
 
+echo "ready mount juicefs....  "
+juicefs mount $META_URL -d juicefs_mnt
+
 echo "ready start juicefs  gateway...."
 juicefs gateway $META_URL :9100
