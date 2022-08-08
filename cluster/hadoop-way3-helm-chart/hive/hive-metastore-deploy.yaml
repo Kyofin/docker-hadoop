@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hive-metastore-deploy
+  labels:
+    app: hive-metastore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hive-metastore
+  template:
+    metadata:
+      labels:
+        app: hive-metastore
+    spec:
+      containers:
+        - name: hive-metastore
+          image: registry.mufankong.top/bigdata/hadoop-hive-metastore:2.3.9
+          imagePullPolicy: Always
+          ports:
+            - name: metastore-port
+              containerPort: 9083
+              protocol: TCP
+          volumeMounts:
+            - name: metastore-cfg-vol
+              mountPath: /opt/apache-hive-2.3.9-bin/conf/hive-site.xml
+              subPath: hive-site.xml
+            - name: metastore-cfg-vol
+              mountPath:  /opt/apache-hive-2.3.9-bin/conf/core-site.xml
+              subPath: core-site.xml
+          resources:
+            requests:
+              memory: "2G"
+              cpu: "2"
+      volumes:
+        - name: metastore-cfg-vol
+          configMap:
+            name: hive-cfg

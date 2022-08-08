@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hive-initschema
+spec:
+  backoffLimit: 1 #失败最多执行几次
+  template:
+
+    spec:
+      volumes:
+        - name: metastore-cfg-vol
+          configMap:
+            name: hive-cfg
+      containers:
+        - name: hive-initschema
+          volumeMounts:
+            - name: metastore-cfg-vol
+              mountPath: /opt/apache-hive-2.3.9-bin/conf/hive-site.xml
+              subPath: hive-site.xml
+          image: registry.mufankong.top/bigdata/hadoop-hive-metastore:2.3.9
+          imagePullPolicy: Always
+          command: ["/opt/apache-hive-2.3.9-bin/bin/schematool"]
+          args: ["--verbose" ,"-initSchema" , "-dbType", "mysql", "-userName", "root", "-passWord", "eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT"]
+      restartPolicy: Never
