@@ -1,0 +1,5 @@
+FROM dolphinscheduler.docker.scarf.sh/apache/dolphinscheduler-master:3.0.0-beta-2
+# For example
+# FROM dolphinscheduler.docker.scarf.sh/apache/dolphinscheduler-tools:3.0.0-beta-2
+
+COPY mysql-connector-java-8.0.21.jar /opt/dolphinscheduler/libs/mysql-connector-java-8.0.21.jar

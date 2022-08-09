@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-ds-lib
+spec:
+  template:
+    spec:
+      containers:
+        - name: test-ds-lib
+          image: registry.mufankong.top/bigdata/dolphinscheduler-alert-server:3.0.0-beta-2
+          imagePullPolicy: Always
+          command: ['sh', '-xc', 'for i in $(seq 1 180); do  sleep 5; done; ']
+#          args: ["-a" ,"/opt/dolphinscheduler/lib/"]
+      restartPolicy: Never
+  backoffLimit: 1
