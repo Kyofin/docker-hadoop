@@ -14,3 +14,13 @@ docker pull minio/minio:RELEASE.2020-08-08T04-50-06Z
 docker tag minio/minio:RELEASE.2020-08-08T04-50-06Z  registry.mufankong.top/bigdata/minio/minio:RELEASE.2020-08-08T04-50-06Z
 docker push registry.mufankong.top/bigdata/minio/minio:RELEASE.2020-08-08T04-50-06Z
 
+# 新版minio
+docker pull quay.io/minio/minio:RELEASE.2022-08-02T23-59-16Z
+docker tag quay.io/minio/minio:RELEASE.2022-08-02T23-59-16Z  registry.mufankong.top/bigdata/quay.io/minio/minio:RELEASE.2022-08-02T23-59-16Z
+docker push registry.mufankong.top/bigdata/quay.io/minio/minio:RELEASE.2022-08-02T23-59-16Z
+
+docker pull quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
+docker tag quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z  registry.mufankong.top/bigdata/quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
+docker push registry.mufankong.top/bigdata/quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
+
+
