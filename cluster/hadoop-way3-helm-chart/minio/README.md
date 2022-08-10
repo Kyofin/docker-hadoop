@@ -2,6 +2,12 @@
 >
 > Changes to the original chart:
 > - Use the actual specific version instead of "master".
+# 安装卸载
+```shell
+ helm install my-minio . -n bigdata-dev  
+ helm uninstall my-minio -n bigdata-dev  
+```
+如果要用分布式模式，要注意服务器节点要大于4，而且服务器的时间需要严格同步。
 
 MinIO
 =====

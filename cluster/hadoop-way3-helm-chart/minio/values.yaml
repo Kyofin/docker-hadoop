@@ -36,7 +36,7 @@ helmKubectlJqImage:
 ## minio server mode, i.e. standalone or distributed.
 ## Distributed Minio ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
 ##
-mode: standalone
+mode: distributed
 
 ## Additional arguments to pass to minio binary
 extraArgs: []
