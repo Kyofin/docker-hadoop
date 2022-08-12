@@ -1,3 +1,12 @@
+# 新版的minio
+更推荐使用，web页面带监控，更强大
+
+## 安装卸载
+```shell
+ helm install minio-01 . -n bigdata-dev  
+ helm uninstall minio-01 -n bigdata-dev  
+```
+如果要用分布式模式，要注意服务器节点要大于4，而且服务器的时间需要严格同步。
 # MinIO Helm Chart
 
 [![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io) [![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](https://github.com/minio/minio/blob/master/LICENSE)
