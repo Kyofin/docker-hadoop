@@ -8,7 +8,7 @@ metadata:
     release: bigdata
 
 spec:
-  replicas: 3
+  replicas: 6
   volumeClaimTemplates:
     - metadata:
         name: nn-local-dir
@@ -90,15 +90,12 @@ spec:
       terminationGracePeriodSeconds: 0
       securityContext: {}
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 5
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: hadoop
-                    component: yarn-nm
-                    release: bigdata
-                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: small_storage
+                    operator: DoesNotExist
+
   serviceName: bigdata-hadoop-yarn-nm
 
