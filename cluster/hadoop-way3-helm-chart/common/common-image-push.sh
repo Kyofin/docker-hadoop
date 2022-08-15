@@ -23,4 +23,16 @@ docker pull quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
 docker tag quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z  registry.mufankong.top/bigdata/quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
 docker push registry.mufankong.top/bigdata/quay.io/minio/mc:RELEASE.2022-07-29T19-17-16Z
 
+# prometheus
+docker pull quay.io/prometheus/prometheus:v2.36.2
+docker tag quay.io/prometheus/prometheus:v2.36.2  registry.mufankong.top/bigdata/quay.io/prometheus/prometheus:v2.36.2
+docker push registry.mufankong.top/bigdata/quay.io/prometheus/prometheus:v2.36.2
 
+docker pull prom/pushgateway:v1.4.3
+docker tag prom/pushgateway:v1.4.3  registry.mufankong.top/bigdata/prom/pushgateway:v1.4.3
+docker push registry.mufankong.top/bigdata/prom/pushgateway:v1.4.3
+
+# grafana
+docker pull grafana/grafana:9.0.5
+docker tag  grafana/grafana:9.0.5  registry.mufankong.top/bigdata/grafana/grafana:9.0.5
+docker push registry.mufankong.top/bigdata/grafana/grafana:9.0.5
