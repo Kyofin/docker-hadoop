@@ -9,6 +9,15 @@ metadata:
 
 spec:
   replicas: 3
+  volumeClaimTemplates:
+    - metadata:
+        name: nn-local-dir
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 300Gi
   selector:
     matchLabels:
       app: hadoop
@@ -61,6 +70,8 @@ spec:
           volumeMounts:
             - name: hadoop-config
               mountPath: /tmp/hadoop-config
+            - name: nn-local-dir
+              mountPath: /var/lib/hadoop-yarn/cache/root/nm-local-dir
           livenessProbe:
             httpGet:
               path: /node
