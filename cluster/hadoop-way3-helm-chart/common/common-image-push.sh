@@ -36,3 +36,8 @@ docker push registry.mufankong.top/bigdata/prom/pushgateway:v1.4.3
 docker pull grafana/grafana:9.0.5
 docker tag  grafana/grafana:9.0.5  registry.mufankong.top/bigdata/grafana/grafana:9.0.5
 docker push registry.mufankong.top/bigdata/grafana/grafana:9.0.5
+
+# redis
+docker pull redis:6.0.9
+docker tag  redis:6.0.9  registry.mufankong.top/bigdata/redis:6.0.9
+docker push registry.mufankong.top/bigdata/redis:6.0.9
