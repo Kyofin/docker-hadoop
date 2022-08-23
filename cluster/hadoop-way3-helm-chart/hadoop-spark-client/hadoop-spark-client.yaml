@@ -1,45 +1,50 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hadoop-client
+  name: hadoop-spark-client
   labels:
-    app:  hadoop-client
+    app:  hadoop-spark-client
 spec:
   containers:
     - name: client
-      image: registry.mufankong.top/bigdata/danisla/hadoop-client:2.7.2
+      image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
       imagePullPolicy: IfNotPresent
       env:
         - name: TZ
           value: "Asia/Shanghai"
-      envFrom:
-        - configMapRef:
-            name: hadoop-env
+
       volumeMounts:
+        - name: spark-conf
+          mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/spark-defaults.conf
+          subPath: spark-defaults.conf
         - name: hadoop-conf
-          mountPath: /opt/hadoop-conf/
-# todo 增加headless 使client模式能找到提交的节点， 增加env HADOOP_CONF_DIR
+          mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/core-site.xml
+          subPath: core-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/yarn-site.xml
+          subPath: yarn-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/hive-site.xml
+          subPath: hive-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/mapred-site.xml
+          subPath: mapred-site.xml
   volumes:
+    - name: spark-conf
+      configMap:
+        name: spark-conf-map
     - name: hadoop-conf
       configMap:
         name: hadoop-conf
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hadoop-env
-  namespace: bigdata-dev
-data:
-  HADOOP_CONF_DIR: /opt/hadoop-conf/
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hadoop-client
-  namespace: bigdata-dev
+  name: hadoop-spark-client
 spec:
   selector:
-    app: hadoop-client
+    app: hadoop-spark-client
   clusterIP: None
 
 ---
@@ -47,7 +52,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: hadoop-conf
-  namespace: bigdata-dev
 data:
   core-site.xml: |
     <?xml version="1.0"?>
@@ -82,6 +86,21 @@ data:
              <name>juicefs.cache-dir</name>
              <value>/tmp/data/juicefs</value>
          </property>
+    </configuration>
+
+
+  hive-site.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+    <configuration>
+        <property>
+            <name>hive.metastore.uris</name>
+            <value>thrift://hive-metastore-service:9083</value>
+        </property>
+            <property>
+               <name>hive.metastore.warehouse.dir</name>
+               <value>/app/hive/warehouse</value>
+           </property>
     </configuration>
 
 
@@ -178,4 +197,22 @@ data:
               <value>5120</value>
         </property>
     </configuration>
+
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-conf-map
+data:
+  spark-defaults.conf: |
+    # spark.master                     spark://master:7077
+    # spark.eventLog.enabled           true
+    # spark.eventLog.dir               hdfs://namenode:8021/directory
+    # spark.serializer                 org.apache.spark.serializer.KryoSerializer
+    # spark.driver.memory              5g
+    # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
+    spark.sql.catalog.spark_catalog    org.apache.iceberg.spark.SparkSessionCatalog
+
 

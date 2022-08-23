@@ -1,8 +1,9 @@
 FROM  danisla/hadoop:2.7.2
 USER  root
-COPY spark-3.1.2-bin-hadoop2.7.tgz /opt
-RUN tar zxvf /opt/spark-3.1.2-bin-hadoop2.7.tgz -C /opt
+COPY spark-3.2.1-bin-hadoop2.7.tgz /opt
+RUN tar zxvf /opt/spark-3.2.1-bin-hadoop2.7.tgz -C /opt
 COPY sleep.sh /opt
-COPY juicefs-hadoop-1.0.0-rc2.jar /opt/spark-3.1.2-bin-hadoop2.7/jars
+COPY juicefs-hadoop-1.0.0-rc2.jar /opt/spark-3.2.1-bin-hadoop2.7/jars
+COPY iceberg-spark-runtime-3.2_2.12-0.13.2.jar /opt/spark-3.2.1-bin-hadoop2.7/jars
 RUN chmod +x /opt/sleep.sh
 ENTRYPOINT ["/opt/sleep.sh"]
