@@ -5,7 +5,7 @@ metadata:
   labels:
     app:  spark-thriftserver
 spec:
-  replicas: 1
+  replicas: 2
   serviceName: spark-thriftserver-service
   selector:
     matchLabels:
@@ -19,8 +19,8 @@ spec:
         - name: spark-thriftserver
           image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
           imagePullPolicy: IfNotPresent
-          # todo 增加Fair调度和executor num
-          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh  --hiveconf hive.server2.thrift.port=10000   --master yarn;touch /tmp/hello.txt;while true;do /bin/echo $(date +%T) >> /tmp/hello.txt;sleep 3;done;" ]
+          # todo 增加Fair调度和executor num，服务监控检查
+          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh  --hiveconf hive.server2.thrift.port=10000   --master yarn;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.sql.hive.thriftserver.HiveThriftServer2-1-$MY_POD_NAME.out; " ]
           env:
             - name: TZ
               value: "Asia/Shanghai"
