@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: spark-thriftserver
+  labels:
+    app:  spark-thriftserver
+spec:
+  replicas: 1
+  serviceName: spark-thriftserver-service
+  selector:
+    matchLabels:
+      app:  spark-thriftserver
+  template:
+    metadata:
+      labels:
+        app:  spark-thriftserver
+    spec:
+      containers:
+        - name: spark-thriftserver
+          image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh  --hiveconf hive.server2.thrift.port=10000   --master yarn;touch /tmp/hello.txt;while true;do /bin/echo $(date +%T) >> /tmp/hello.txt;sleep 3;done;" ]
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - name: spark-conf
+              mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/spark-defaults.conf
+              subPath: spark-defaults.conf
+            - name: hadoop-conf
+              mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/core-site.xml
+              subPath: core-site.xml
+            - name: hadoop-conf
+              mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/yarn-site.xml
+              subPath: yarn-site.xml
+            - name: hadoop-conf
+              mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/hive-site.xml
+              subPath: hive-site.xml
+            - name: hadoop-conf
+              mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/mapred-site.xml
+              subPath: mapred-site.xml
+      volumes:
+        - name: spark-conf
+          configMap:
+            name: spark-conf-map
+        - name: hadoop-conf
+          configMap:
+            name: spark-hadoop-conf-map
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-thriftserver-svc
+spec:
+  ports:
+    # The default port limit is 30000-32767
+    # to change:
+    #   vim kube-apiserver.yaml (usually under path: /etc/kubernetes/manifests/)
+    #   add or change line 'service-node-port-range=1-32767' under kube-apiserver
+    - nodePort: 30009
+      # same of containerPort in pod yaml
+      port: 10000
+      protocol: TCP
+  type: NodePort
+  selector:
+    # same of pod label
+    app: spark-thriftserver
+---
+kind: Service
+apiVersion: v1
+
+metadata:
+  name: spark-thriftserver-service
+  labels:
+    app: spark-thriftserver
+spec:
+  selector:
+    app: spark-thriftserver
+  clusterIP: None
+  type: ClusterIP
+
