@@ -36,6 +36,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: HADOOP_CONF_DIR
+              value: /opt/hadoop_conf
           volumeMounts:
             - name: spark-conf
               mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/spark-defaults.conf
@@ -52,6 +54,8 @@ spec:
             - name: hadoop-conf
               mountPath: /opt/spark-3.2.1-bin-hadoop2.7/conf/mapred-site.xml
               subPath: mapred-site.xml
+            - name: hadoop-conf
+              mountPath: /opt/hadoop_conf
       volumes:
         - name: spark-conf
           configMap:
