@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kylin4
+  labels:
+    app:  kylin4
+spec:
+  containers:
+    - name: kylin
+      image: registry.mufankong.top/bigdata/kylin:4.0.2-spark3
+      imagePullPolicy: IfNotPresent
+      command: [ "/bin/sh","-c","/opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/bin/kylin.sh start ;   tail -f opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/logs/kylin.log; " ]
+      env:
+        - name: TZ
+          value: "Asia/Shanghai"
+        - name: SPARK_HOME
+          value: /opt/spark-3.1.1-bin-hadoop2.7
+        - name: HIVE_HOME
+          value: /opt/apache-hive-2.3.9-bin
+#        - name: PATH
+#          value: "$PATH:$HIVE_HOME/bin"
+      volumeMounts:
+        - name: spark-conf
+          mountPath: /opt/spark-3.1.1-bin-hadoop2.7/conf/spark-defaults.conf
+          subPath: spark-defaults.conf
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.1.1-bin-hadoop2.7/conf/core-site.xml
+          subPath: core-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.1.1-bin-hadoop2.7/conf/yarn-site.xml
+          subPath: yarn-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.1.1-bin-hadoop2.7/conf/hive-site.xml
+          subPath: hive-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/spark-3.1.1-bin-hadoop2.7/conf/mapred-site.xml
+          subPath: mapred-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/hadoop_conf/core-site.xml
+          subPath: core-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/hadoop_conf/yarn-site.xml
+          subPath: yarn-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/hadoop_conf/hive-site.xml
+          subPath: hive-site.xml
+        - name: hadoop-conf
+          mountPath: /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/hadoop_conf/mapred-site.xml
+          subPath: mapred-site.xml
+        - name: kylin-conf
+          mountPath: /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/conf/kylin.properties
+          subPath: kylin.properties
+
+  volumes:
+    - name: spark-conf
+      configMap:
+        name: spark-conf-map
+    - name: hadoop-conf
+      configMap:
+        name: kylin4-hadoop-conf-map
+    - name: kylin-conf
+      configMap:
+        name: kylin-conf-map
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kylin4
+spec:
+  selector:
+    app: kylin4
+  clusterIP: None
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kylin4-ui
+spec:
+  selector:
+    app: kylin4
+  ports:
+    - port: 7070
+      name: web
+
+
+
+
+
