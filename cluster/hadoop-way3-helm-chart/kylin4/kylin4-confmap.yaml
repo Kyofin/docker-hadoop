@@ -450,3 +450,5 @@ data:
     kylin.engine.spark-conf.spark.history.fs.logDirectory=jfs://myjfs/kylin/spark-history
     kylin.metadata.url=kylin_metadata@jdbc,driverClassName=com.mysql.jdbc.Driver,url=jdbc:mysql://mysql-01:3306/kylin4_test,username=root,password=eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT
     kylin.env.zookeeper-connect-string=zookeeper-0.zookeeper-headless:2181
+    kylin.query.spark-conf.spark.master=local[*]
+

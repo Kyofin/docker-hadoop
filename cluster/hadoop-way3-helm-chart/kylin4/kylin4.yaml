@@ -9,7 +9,7 @@ spec:
     - name: kylin
       image: registry.mufankong.top/bigdata/kylin:4.0.2-spark3
       imagePullPolicy: IfNotPresent
-      command: [ "/bin/sh","-c","/opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/bin/kylin.sh start ;   tail -f opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/logs/kylin.log; " ]
+      command: [ "/bin/sh","-c","/opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/bin/kylin.sh start ;  sleep 10;  tail -f /opt/apache-kylin-4.0.2-SNAPSHOT-bin-spark3/logs/kylin.log  " ]
       env:
         - name: TZ
           value: "Asia/Shanghai"
@@ -81,9 +81,11 @@ metadata:
 spec:
   selector:
     app: kylin4
+  type: NodePort
   ports:
     - port: 7070
       name: web
+      nodePort: 30076
 
 
 
