@@ -164,3 +164,8 @@ data:
     # spark.driver.memory              5g
     # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
     spark.sql.catalog.spark_catalog    org.apache.iceberg.spark.SparkSessionCatalog
+    spark.history.ui.port 18080
+    spark.history.retainedApplications 300
+    spark.history.fs.logDirectory jfs://myjfs/spark3/history
+    spark.eventLog.enabled           true
+    spark.eventLog.dir               jfs://myjfs/spark3/history

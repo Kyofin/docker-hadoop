@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: spark-thriftserver
+  name: spark-history
   labels:
-    app:  spark-thriftserver
+    app:  spark-history
 spec:
   replicas: 1
-  serviceName: spark-thriftserver-service
+  serviceName: spark-history-service
   selector:
     matchLabels:
-      app:  spark-thriftserver
+      app:  spark-history
   template:
     metadata:
       labels:
-        app:  spark-thriftserver
+        app:  spark-history
     spec:
       containers:
-        - name: spark-thriftserver
+        - name: spark-history
           image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
           imagePullPolicy: IfNotPresent
           # todo 增加Fair调度和executor num，服务监控检查
-          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh  --hiveconf hive.server2.thrift.port=10000   --master yarn;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.sql.hive.thriftserver.HiveThriftServer2-1-$MY_POD_NAME.out; " ]
+          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-history-server.sh  ;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.deploy.history.HistoryServer-1-$MY_POD_NAME.out; " ]
           env:
             - name: TZ
               value: "Asia/Shanghai"
@@ -64,32 +64,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: spark-thriftserver-svc
+  name: spark-history-svc
 spec:
   ports:
     # The default port limit is 30000-32767
     # to change:
     #   vim kube-apiserver.yaml (usually under path: /etc/kubernetes/manifests/)
     #   add or change line 'service-node-port-range=1-32767' under kube-apiserver
-    - nodePort: 30009
+    - nodePort: 30008
       # same of containerPort in pod yaml
-      port: 10000
+      port: 18080
       protocol: TCP
   type: NodePort
   selector:
     # same of pod label
-    app: spark-thriftserver
+    app: spark-history
 ---
 kind: Service
 apiVersion: v1
 
 metadata:
-  name: spark-thriftserver-service
+  name: spark-history-service
   labels:
-    app: spark-thriftserver
+    app: spark-history
 spec:
   selector:
-    app: spark-thriftserver
+    app: spark-history
   clusterIP: None
   type: ClusterIP
 
