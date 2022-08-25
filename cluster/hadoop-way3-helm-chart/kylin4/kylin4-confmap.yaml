@@ -154,7 +154,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: spark-conf-map
+  name: kylin-spark-conf-map
 data:
   spark-defaults.conf: |
     # spark.master                     spark://master:7077

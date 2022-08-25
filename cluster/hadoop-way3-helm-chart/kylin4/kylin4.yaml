@@ -54,7 +54,7 @@ spec:
   volumes:
     - name: spark-conf
       configMap:
-        name: spark-conf-map
+        name: kylin-spark-conf-map
     - name: hadoop-conf
       configMap:
         name: kylin4-hadoop-conf-map
