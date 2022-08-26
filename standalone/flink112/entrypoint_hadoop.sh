@@ -61,6 +61,20 @@ $HIVE_HOME/bin/schematool -dbType mysql -initSchema
 # rm -rf /tmp/kafka-logs
 # nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties &
 
+# 添加dockerfile中的env到.bashrc文件中，实现ssh登录后自动加载这些变量
+for item in `cat /proc/1/environ |tr '\0' '\n'`
+do
+  echo -n 'export' $item  >> ~/.bashrc
+  echo "" >> ~/.bashrc
+done
+
+# 添加HADOOP_CLASSPATH变量
+echo 'export HADOOP_CLASSPATH=$(hadoop classpath) '>> ~/.bashrc
+
+
+# 启动sshd
+/usr/sbin/sshd -D &
+
 sleep 10s
 
 

@@ -110,7 +110,19 @@ RUN wget https://archive.apache.org/dist/flink/flink-$FLINK_VERSION/flink-$FLINK
 #    && mkdir -p /data/zookeeper
 #COPY conf/zk/zoo.cfg $ZK_HOME/conf
 
-RUN echo 'export HADOOP_CLASSPATH=$(hadoop classpath) '>> ~/.bashrc
+
+
+# 安装ssh
+RUN yum install -y openssl openssh-server openssh-clients
+RUN echo  "PermitRootLogin yes"  >> /etc/ssh/sshd_config
+RUN echo 'root:123456' | chpasswd
+RUN ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
+RUN ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N ''
+
+
+
+
 
 COPY ./entrypoint_hadoop.sh /home/admin/entrypoint_hadoop.sh
 RUN chmod u+x /home/admin/entrypoint_hadoop.sh

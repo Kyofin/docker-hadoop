@@ -20,9 +20,10 @@ docker要设置内存大于8G。
 - MySQL
 
 ```shell script
-docker run  -d \
+docker run  -d  \
 -m 8G \
 -p 4040:4040 \
+-p 2208:22 \
 -p 13306:3306 \
 -p 7070:7070 \
 -p 8088:8088 \
@@ -34,6 +35,7 @@ docker run  -d \
 flink112-all-in-one:1.0
 ```
 MYSQL默认账号密码：root/123456。
+ssh默认账号密码：root/123456。
 
 启动容器后，可以打开下面页面在浏览器中：
 - HDFS NameNode Web UI: [http://127.0.0.1:50070](http://127.0.0.1:50070/)
