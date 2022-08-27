@@ -1,0 +1,6 @@
+dependencies:
+- name: etcd
+  repository: https://charts.kubesphere.io/test
+  version: 0.1.1
+digest: sha256:c5b782aea4cf95af9ddf3c8712291f1f82d722fb6c77e50eb901206283317c5a
+generated: "2021-04-15T14:28:26.090145204Z"

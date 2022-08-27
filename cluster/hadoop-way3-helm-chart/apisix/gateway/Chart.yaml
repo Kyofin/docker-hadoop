@@ -1,0 +1,19 @@
+annotations:
+  app.kubesphere.io/category: Networking
+apiVersion: v2
+appVersion: 1.15.0
+dependencies:
+- condition: etcd.enabled
+  name: etcd
+  repository: https://charts.kubesphere.io/test
+  version: 0.1.1
+description: Apache APISIX is a dynamic, real-time, high-performance API gateway,
+  based on the Nginx library and etcd.
+home: https://apisix.apache.org/
+icon: https://apisix.apache.org/img/logo.png
+maintainers:
+- email: liling@apache.org
+  name: liling
+name: apisix
+type: application
+version: 0.1.7

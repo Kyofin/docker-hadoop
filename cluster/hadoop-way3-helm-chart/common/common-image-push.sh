@@ -41,3 +41,20 @@ docker push registry.mufankong.top/bigdata/grafana/grafana:9.0.5
 docker pull redis:6.0.9
 docker tag  redis:6.0.9  registry.mufankong.top/bigdata/redis:6.0.9
 docker push registry.mufankong.top/bigdata/redis:6.0.9
+
+
+# apisix
+docker pull apache/apisix:1.5-alpine
+docker tag apache/apisix:1.5-alpine registry.mufankong.top/bigdata/apache/apisix:1.5-alpine
+docker push registry.mufankong.top/bigdata/apache/apisix:1.5-alpine
+
+# apisix dashboard
+#docker pull apache/apisix-dashboard:2.13-alpine
+#docker tag apache/apisix-dashboard:2.13-alpine registry.mufankong.top/bigdata/apache/apisix-dashboard:2.13-alpine
+#docker push registry.mufankong.top/bigdata/apache/apisix-dashboard:2.13-alpine
+
+
+# etcd
+docker pull kubesphere/etcd:v3.3.12
+docker tag kubesphere/etcd:v3.3.12 registry.mufankong.top/bigdata/kubesphere/etcd:v3.3.12
+docker push registry.mufankong.top/bigdata/kubesphere/etcd:v3.3.12
