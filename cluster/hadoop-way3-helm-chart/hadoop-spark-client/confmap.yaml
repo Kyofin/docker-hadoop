@@ -51,8 +51,33 @@ data:
                <name>hive.metastore.warehouse.dir</name>
                <value>/app/hive/warehouse</value>
            </property>
-    </configuration>
+        <property>
+            <name>hive.metastore.client.connect.retry.delay</name>
+            <value>5</value>
+        </property>
+        
+        <property>
+            <name>hive.metastore.client.socket.timeout</name>
+            <value>1800</value>
+        </property>
+           
+        <property>
+            <name>hive.server2.enable.doAs</name>
+            <value>false</value>
+        </property>
+        
+        <property>
+            <name>hive.server2.thrift.port</name>
+            <value>10018</value>
+        </property>
+        
+        <property>
+            <name>hive.server2.transport.mode</name>
+            <value>binary</value>
+        </property>
 
+    </configuration>
+      
 
   yarn-site.xml: |
     <?xml version="1.0"?>
@@ -164,6 +189,7 @@ data:
     # spark.driver.memory              5g
     # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
     spark.sql.catalog.spark_catalog    org.apache.iceberg.spark.SparkSessionCatalog
+    spark.sql.extensions org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
     spark.history.ui.port 18080
     spark.history.retainedApplications 300
     spark.history.fs.logDirectory jfs://myjfs/spark3/history

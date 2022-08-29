@@ -19,8 +19,13 @@ spec:
         - name: spark-thriftserver
           image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            tcpSocket:
+              port: 10018
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
           # todo 增加Fair调度和executor num，服务监控检查
-          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh  --hiveconf hive.server2.thrift.port=10000   --master yarn;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.sql.hive.thriftserver.HiveThriftServer2-1-$MY_POD_NAME.out; " ]
+          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh    --master yarn;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.sql.hive.thriftserver.HiveThriftServer2-1-$MY_POD_NAME.out; " ]
           env:
             - name: TZ
               value: "Asia/Shanghai"
@@ -77,7 +82,7 @@ spec:
     #   add or change line 'service-node-port-range=1-32767' under kube-apiserver
     - nodePort: 30009
       # same of containerPort in pod yaml
-      port: 10000
+      port: 10018
       protocol: TCP
   type: NodePort
   selector:
