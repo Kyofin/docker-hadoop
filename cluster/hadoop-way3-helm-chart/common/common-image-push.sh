@@ -58,3 +58,13 @@ docker push registry.mufankong.top/bigdata/apache/apisix:1.5-alpine
 docker pull kubesphere/etcd:v3.3.12
 docker tag kubesphere/etcd:v3.3.12 registry.mufankong.top/bigdata/kubesphere/etcd:v3.3.12
 docker push registry.mufankong.top/bigdata/kubesphere/etcd:v3.3.12
+
+# loki
+docker pull grafana/loki:2.3.0
+docker tag grafana/loki:2.3.0 registry.mufankong.top/bigdata/grafana/loki:2.3.0
+docker push registry.mufankong.top/bigdata/grafana/loki:2.3.0
+
+# promtail
+docker pull grafana/promtail:2.3.0
+docker tag grafana/promtail:2.3.0 registry.mufankong.top/bigdata/grafana/promtail:2.3.0
+docker push registry.mufankong.top/bigdata/grafana/promtail:2.3.0
