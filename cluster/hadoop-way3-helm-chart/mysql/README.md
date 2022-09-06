@@ -1,3 +1,9 @@
+# 安装卸载
+```shell
+ helm install mysql-01 . -n bigdata-local     
+ helm uninstall  mysql-01  -n bigdata-dev  
+
+```
 # MySQL
 
 [MySQL](https://MySQL.org) is one of the most popular database servers in the world. Notable users include Wikipedia, Facebook and Google.
