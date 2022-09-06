@@ -20,7 +20,7 @@ spec:
           image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
           imagePullPolicy: IfNotPresent
           # todo 增加Fair调度和executor num，服务监控检查
-          command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-history-server.sh  ;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.deploy.history.HistoryServer-1-$MY_POD_NAME.out; " ]
+          command: [ "/bin/sh","-c","/usr/local/hadoop-2.7.2/bin/hadoop fs -mkdir -p /spark3/history ; /opt/spark-3.2.1-bin-hadoop2.7/sbin/start-history-server.sh  ;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.deploy.history.HistoryServer-1-$MY_POD_NAME.out; " ]
           env:
             - name: TZ
               value: "Asia/Shanghai"
@@ -71,15 +71,9 @@ metadata:
   name: spark-history-svc
 spec:
   ports:
-    # The default port limit is 30000-32767
-    # to change:
-    #   vim kube-apiserver.yaml (usually under path: /etc/kubernetes/manifests/)
-    #   add or change line 'service-node-port-range=1-32767' under kube-apiserver
-    - nodePort: 30008
-      # same of containerPort in pod yaml
-      port: 18080
+    - port: 18080
       protocol: TCP
-  type: NodePort
+      name: spark-history-web
   selector:
     # same of pod label
     app: spark-history

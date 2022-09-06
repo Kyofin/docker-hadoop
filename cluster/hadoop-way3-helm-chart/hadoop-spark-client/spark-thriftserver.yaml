@@ -76,15 +76,10 @@ metadata:
   name: spark-thriftserver-svc
 spec:
   ports:
-    # The default port limit is 30000-32767
-    # to change:
-    #   vim kube-apiserver.yaml (usually under path: /etc/kubernetes/manifests/)
-    #   add or change line 'service-node-port-range=1-32767' under kube-apiserver
-    - nodePort: 30009
-      # same of containerPort in pod yaml
-      port: 10018
+    - port: 10018
       protocol: TCP
-  type: NodePort
+      name: spark-thriftserver-port
+
   selector:
     # same of pod label
     app: spark-thriftserver
