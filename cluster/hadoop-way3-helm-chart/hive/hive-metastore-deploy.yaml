@@ -16,6 +16,11 @@ spec:
     spec:
       containers:
         - name: hive-metastore
+          livenessProbe:
+            tcpSocket:
+              port: 9083
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
           env:
             - name: TZ
               value: "Asia/Shanghai"
