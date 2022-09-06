@@ -138,13 +138,15 @@ resources:
 configurationFilesPath: /etc/mysql/conf.d/
 
 # Custom mysql configuration files used to override default mysql settings
-configurationFiles: {}
-#  mysql.cnf: |-
-#    [mysqld]
-#    skip-name-resolve
-#    ssl-ca=/ssl/ca.pem
-#    ssl-cert=/ssl/server-cert.pem
-#    ssl-key=/ssl/server-key.pem
+configurationFiles:
+  mysql.cnf: |-
+    [mysqld]
+      max_connections = 1024
+      wait_timeout = 60
+      interactive_timeout = 7200
+      max_allowed_packet = 32M
+      join_buffer_size = 2M
+      thread_cache_size = 200
 
 # Custom mysql init SQL files used to initialize the database
 initializationFiles: {}

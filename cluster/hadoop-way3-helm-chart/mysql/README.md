@@ -1,6 +1,6 @@
 # 安装卸载
 ```shell
- helm install mysql-01 . -n bigdata-local     
+ helm install mysql-01 . -n bigdata-dev
  helm uninstall  mysql-01  -n bigdata-dev  
 
 ```
