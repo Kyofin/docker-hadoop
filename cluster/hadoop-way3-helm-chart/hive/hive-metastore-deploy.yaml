@@ -16,6 +16,9 @@ spec:
     spec:
       containers:
         - name: hive-metastore
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
           image: registry.mufankong.top/bigdata/hadoop-hive-metastore:2.3.9
           imagePullPolicy: Always
           ports:
