@@ -8,7 +8,7 @@ metadata:
     release: bigdata
 
 spec:
-  replicas: 6
+  replicas: 3
   volumeClaimTemplates:
     - metadata:
         name: nn-local-dir
