@@ -1,4 +1,4 @@
-FROM  danisla/hadoop:2.7.2
+FROM  poker/hadoop:2.7.2
 USER  root
 COPY spark-3.2.1-bin-hadoop2.7.tgz /opt
 RUN tar zxvf /opt/spark-3.2.1-bin-hadoop2.7.tgz -C /opt

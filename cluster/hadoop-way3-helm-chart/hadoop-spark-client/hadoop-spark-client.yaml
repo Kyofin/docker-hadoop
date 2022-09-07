@@ -8,7 +8,7 @@ spec:
   containers:
     - name: client
       image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
-      imagePullPolicy: IfNotPresent
+      imagePullPolicy: Always
       env:
         - name: TZ
           value: "Asia/Shanghai"

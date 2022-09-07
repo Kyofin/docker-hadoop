@@ -141,9 +141,9 @@ configurationFilesPath: /etc/mysql/conf.d/
 configurationFiles:
   mysql.cnf: |-
     [mysqld]
-      max_connections = 1024
-      wait_timeout = 60
-      interactive_timeout = 7200
+      max_connections = 3600
+      wait_timeout = 28800
+      interactive_timeout = 28800
       max_allowed_packet = 32M
       join_buffer_size = 2M
       thread_cache_size = 200

@@ -1,4 +1,4 @@
-FROM danisla/hadoop:2.7.2
+FROM poker/hadoop:2.7.2
 ENV HIVE_HOME=/opt/apache-hive-2.3.9-bin
 
 # setup hive

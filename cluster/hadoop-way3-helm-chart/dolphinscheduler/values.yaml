@@ -47,7 +47,8 @@ externalDatabase:
   username: "root"
   password: "eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT"
   database: "dolphinscheduler3"
-  params: "characterEncoding=utf8"
+  # 增加自动建库
+  params: "createDatabaseIfNotExist=true&characterEncoding=utf8"
 
 ## If not exists external registry, the zookeeper registry will be used by default.
 zookeeper:

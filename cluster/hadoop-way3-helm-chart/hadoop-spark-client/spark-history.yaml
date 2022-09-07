@@ -18,7 +18,7 @@ spec:
       containers:
         - name: spark-history
           image: registry.mufankong.top/bigdata/hadoop-spark-client:h2.7.2-s3.2.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           # todo 增加Fair调度和executor num，服务监控检查
           command: [ "/bin/sh","-c","/usr/local/hadoop-2.7.2/bin/hadoop fs -mkdir -p /spark3/history ; /opt/spark-3.2.1-bin-hadoop2.7/sbin/start-history-server.sh  ;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.deploy.history.HistoryServer-1-$MY_POD_NAME.out; " ]
           env:

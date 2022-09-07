@@ -27,7 +27,7 @@ spec:
             defaultMode: 420
       containers:
         - name: yarn-rm
-          image: 'registry.mufankong.top/bigdata/danisla/hadoop:2.7.2'
+          image: 'registry.mufankong.top/bigdata/poker/hadoop:2.7.2'
           env:
             - name: TZ
               value: "Asia/Shanghai"
@@ -63,7 +63,7 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 5
             timeoutSeconds: 2
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
       terminationGracePeriodSeconds: 0
       securityContext: {}
       affinity:
