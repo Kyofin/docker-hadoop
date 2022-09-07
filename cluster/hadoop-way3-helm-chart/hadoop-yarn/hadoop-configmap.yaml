@@ -135,12 +135,13 @@ data:
               <value>file:///root/hadoop/tmp</value>
           </property>
         <!--        增加监控推送-->
-       <property>
-         <name>juicefs.push-gateway</name>
-         <value>prometheus-pushgateway:9091</value>
-       </property>
-
-      </configuration>
+        <!--     <property>
+           <name>juicefs.push-gateway</name>
+           <value>prometheus-pushgateway:9091</value>
+         </property> 
+         -->
+  
+        </configuration>
 
   hdfs-site.xml: |
     <?xml version="1.0"?>
