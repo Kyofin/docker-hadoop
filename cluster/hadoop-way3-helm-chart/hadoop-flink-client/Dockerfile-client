@@ -1,0 +1,9 @@
+FROM  poker/hadoop:2.7.2
+USER  root
+COPY flink-1.12.7-bin-scala_2.12.tgz /opt
+RUN tar zxvf /opt/flink-1.12.7-bin-scala_2.12.tgz -C /opt
+RUN rm  /opt/flink-1.12.7-bin-scala_2.12.tgz
+COPY sleep.sh /opt
+RUN cp /usr/local/hadoop/share/hadoop/common/lib/juicefs-hadoop-1.0.0-rc2.jar /opt/flink-1.12.7/lib
+RUN chmod +x /opt/sleep.sh
+ENTRYPOINT ["/opt/sleep.sh"]

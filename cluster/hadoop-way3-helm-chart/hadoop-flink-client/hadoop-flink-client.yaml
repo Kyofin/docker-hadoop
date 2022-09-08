@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-flink-client
+  labels:
+    app:  hadoop-flink-client
+spec:
+  containers:
+    - name: client
+      image: registry.mufankong.top/bigdata/hadoop-flink-client:h2.7.2-f1.12.7
+      imagePullPolicy: Always
+      env:
+        - name: HADOOP_CLASSPATH
+          value: "/opt/hadoop_conf:/usr/local/hadoop/share/hadoop/common/lib/*:/usr/local/hadoop/share/hadoop/common/*:/usr/local/hadoop/share/hadoop/hdfs:/usr/local/hadoop/share/hadoop/hdfs/lib/*:/usr/local/hadoop/share/hadoop/hdfs/*:/usr/local/hadoop/share/hadoop/yarn/lib/*:/usr/local/hadoop/share/hadoop/yarn/*:/usr/local/hadoop/share/hadoop/mapreduce/lib/*:/usr/local/hadoop/share/hadoop/mapreduce/*"
+        - name: TZ
+          value: "Asia/Shanghai"
+        - name: HADOOP_CONF_DIR
+          value: /opt/hadoop_conf
+      volumeMounts:
+        - name: flink-conf
+          mountPath: /opt/flink-1.12.7/conf/flink-conf.yaml
+          subPath: flink-conf.yaml
+        - name: hadoop-conf
+          mountPath: /opt/hadoop_conf
+  volumes:
+    - name: flink-conf
+      configMap:
+        name: flink-conf-map
+    - name: hadoop-conf
+      configMap:
+        name: flink-hadoop-conf-map
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-flink-client
+spec:
+  selector:
+    app: hadoop-flink-client
+  clusterIP: None
+
+
+
+

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: flink-history
+  labels:
+    app:  flink-history
+spec:
+  replicas: 1
+  serviceName: flink-history-service
+  selector:
+    matchLabels:
+      app:  flink-history
+  template:
+    metadata:
+      labels:
+        app:  flink-history
+    spec:
+      containers:
+        - name: flink-history
+          image: registry.mufankong.top/bigdata/hadoop-flink-client:h2.7.2-f1.12.7
+          imagePullPolicy: Always
+          # todo 增加Fair调度和executor num，服务监控检查
+          command: [ "/bin/sh","-c","/usr/local/hadoop-2.7.2/bin/hadoop fs -mkdir -p /flink/completed-jobs ; /opt/flink-1.12.7/bin/historyserver.sh start  ; sleep 10 ;tail -f /opt/flink-1.12.7/log/flink--historyserver-0-$MY_POD_NAME.log ; " ]
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+            - name: HADOOP_CLASSPATH
+              value: "/opt/hadoop_conf:/usr/local/hadoop/share/hadoop/common/lib/*:/usr/local/hadoop/share/hadoop/common/*:/usr/local/hadoop/share/hadoop/hdfs:/usr/local/hadoop/share/hadoop/hdfs/lib/*:/usr/local/hadoop/share/hadoop/hdfs/*:/usr/local/hadoop/share/hadoop/yarn/lib/*:/usr/local/hadoop/share/hadoop/yarn/*:/usr/local/hadoop/share/hadoop/mapreduce/lib/*:/usr/local/hadoop/share/hadoop/mapreduce/*"
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: HADOOP_CONF_DIR
+              value: /opt/hadoop_conf
+          volumeMounts:
+            - name: flink-conf
+              mountPath: /opt/flink-1.12.7/conf/flink-conf.yaml
+              subPath: flink-conf.yaml
+            - name: hadoop-conf
+              mountPath: /opt/hadoop_conf
+      volumes:
+        - name: flink-conf
+          configMap:
+            name: flink-conf-map
+        - name: hadoop-conf
+          configMap:
+            name: flink-hadoop-conf-map
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-history-svc
+spec:
+  ports:
+    - port: 8082
+      protocol: TCP
+      name: flink-history-web
+  selector:
+    # same of pod label
+    app: flink-history
+---
+kind: Service
+apiVersion: v1
+
+metadata:
+  name: flink-history-service
+  labels:
+    app: flink-history
+spec:
+  selector:
+    app: flink-history
+  clusterIP: None
+  type: ClusterIP
+
