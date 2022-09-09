@@ -24,11 +24,26 @@ spec:
       labels:
         app: doris-be
     spec:
+      volumes:
+        - name: doris-conf
+          configMap:
+            name: doris-configmap
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: doris-be
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo 'Hello from the postStart handler' >> /dev/null "]
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "echo 'Hello from the preStop handler'   >> /dev/null "]
           env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: TZ
               value: "Asia/Shanghai"
             - name: BE_IPADDRESS
@@ -64,21 +79,9 @@ spec:
               cpu: 200m
               memory: 1G
           volumeMounts:
-            - mountPath: /opt/doris/doris-be-1.0.0/be/storage
-              name: pvc-doris-be
+            - name: pvc-doris-be
+              mountPath: /opt/doris/doris-be-1.0.0/be/storage
+            - name: doris-conf
+              mountPath: /opt/doris/doris-be-1.0.0/be/conf/be.conf
+              subPath: be.conf
 
-
-
----
-kind: Service
-apiVersion: v1
-
-metadata:
-  name: doris-be-service
-  labels:
-    app: doris-be
-spec:
-  selector:
-    app: doris-be
-  clusterIP: None
-  type: ClusterIP

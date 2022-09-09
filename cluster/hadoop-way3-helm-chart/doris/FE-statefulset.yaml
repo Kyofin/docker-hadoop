@@ -24,6 +24,10 @@ spec:
       labels:
         app: doris-fe
     spec:
+      volumes:
+         - name: doris-conf
+           configMap:
+              name: doris-configmap
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
@@ -38,8 +42,11 @@ spec:
           image: registry.mufankong.top/bigdata/zhaomin1423/doris-fe:1.0.0
           command: [ "/bin/bash", "-ce", "opt/doris/doris-fe-1.0.0/fe/bin/start_fe.sh" ]
           volumeMounts:
-          - mountPath: /opt/doris/doris-fe-1.0.0/fe/doris-meta
-            name: pvc-doris-fe
+            - name: pvc-doris-fe
+              mountPath: /opt/doris/doris-fe-1.0.0/fe/doris-meta
+            - name: doris-conf
+              mountPath: /opt/doris/doris-fe-1.0.0/fe/conf/fe.conf
+              subPath: fe.conf
           livenessProbe:
             httpGet:
               path: /api/bootstrap
@@ -64,17 +71,3 @@ spec:
             requests:
               cpu: 200m
               memory: 1G
-
----
-kind: Service
-apiVersion: v1
-
-metadata:
-  name: doris-fe-service
-  labels:
-    app: doris-fe
-spec:
-  selector:
-    app: doris-fe
-  clusterIP: None
-  type: ClusterIP
