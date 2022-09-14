@@ -8,6 +8,11 @@ docker pull mysql:5.7.30
 docker tag mysql:5.7.30  registry.mufankong.top/bigdata/mysql:5.7.30
 docker push registry.mufankong.top/bigdata/mysql:5.7.30
 
+## mysql-plus
+docker pull bitnami/mysql:5.7.39
+docker tag bitnami/mysql:5.7.39  registry.mufankong.top/bigdata/bitnami/mysql:5.7.39
+docker push registry.mufankong.top/bigdata/bitnami/mysql:5.7.39
+
 
 ## minio
 docker pull minio/minio:RELEASE.2020-08-08T04-50-06Z
