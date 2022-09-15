@@ -19,6 +19,9 @@ kind: ConfigMap
 metadata:
   name: config
 data:
+  CORE-SITE.XML_ozone.om.address: 0.0.0.0:6789
+  CORE-SITE.XML_fs.AbstractFileSystem.o3fs.impl: org.apache.hadoop.fs.ozone.OzFs
+  CORE-SITE.XML_fs.defaultFS: o3fs://bucket.volume
   OZONE-SITE.XML_hdds.datanode.dir: /data/storage
   OZONE-SITE.XML_ozone.scm.datanode.id.dir: /data
   OZONE-SITE.XML_ozone.metadata.dirs: /data/metadata

@@ -33,6 +33,14 @@ spec:
         app: ozone
         component: s3g
     spec:
+      # 针对集群节点硬盘不均匀，增加只调度到大存储的节点
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: small_storage
+                    operator: DoesNotExist
       containers:
       - name: s3g
         image: 'registry.mufankong.top/bigdata/apache/ozone:1.2.0'

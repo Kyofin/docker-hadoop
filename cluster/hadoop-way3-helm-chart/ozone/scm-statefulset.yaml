@@ -37,6 +37,14 @@ spec:
         prometheus.io/port: "9876"
         prometheus.io/path: /prom
     spec:
+      affinity:
+        # 针对集群节点硬盘不均匀，增加只调度到大存储的节点
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: small_storage
+                    operator: DoesNotExist
       securityContext:
         fsGroup: 1000
       initContainers:

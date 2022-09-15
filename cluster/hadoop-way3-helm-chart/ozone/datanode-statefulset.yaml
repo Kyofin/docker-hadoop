@@ -37,7 +37,14 @@ spec:
         prometheus.io/port: "9882"
         prometheus.io/path: /prom
     spec:
+      # 针对集群节点硬盘不均匀，增加只调度到大存储的节点
       affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: small_storage
+                    operator: DoesNotExist
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
