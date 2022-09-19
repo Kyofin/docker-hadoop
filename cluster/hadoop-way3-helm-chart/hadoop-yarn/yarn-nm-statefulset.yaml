@@ -89,13 +89,13 @@ spec:
           imagePullPolicy: Always
       terminationGracePeriodSeconds: 0
       securityContext: {}
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: small_storage
-                    operator: DoesNotExist
+#      affinity:
+#        nodeAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            nodeSelectorTerms:
+#              - matchExpressions:
+#                  - key: small_storage
+#                    operator: DoesNotExist
 
   serviceName: bigdata-hadoop-yarn-nm
 

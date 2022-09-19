@@ -1,3 +1,7 @@
+### 安装
+```shell
+ kubectl apply -f . -n bigdata-local
+```
 ### 测试Iceberg和hive
 ```shell
 bin/spark-sql --master yarn --jars iceberg-spark-runtime-3.1_2.12-0.13.2.jar,kyuubi-spark-connector-tpch_2.12-1.6.0-SNAPSHOT.jar \
