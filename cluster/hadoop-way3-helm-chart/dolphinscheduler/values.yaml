@@ -182,12 +182,12 @@ common:
     DATAX_HOME: "/opt/soft/datax"
   ## Shared storage persistence mounted into api, master and worker, such as Hadoop, Spark, Flink and DataX binary package
   sharedStoragePersistence:
-    enabled: false
+    enabled: true
     mountPath: "/opt/soft"
     accessModes:
     - "ReadWriteMany"
     ## storageClassName must support the access mode: ReadWriteMany
-    storageClassName: "-"
+    storageClassName: "juicefs-sc"
     storage: "20Gi"
   ## If RESOURCE_STORAGE_TYPE is HDFS and FS_DEFAULT_FS is file:///, fsFileResourcePersistence should be enabled for resource storage
   fsFileResourcePersistence:
@@ -248,6 +248,7 @@ master:
   ## The StatefulSet controller is responsible for mapping network identities to claims in a way that maintains the identity of a pod.
   ## Every claim in this list must have at least one matching (by name) volumeMount in one container in the template.
   ## A claim in this list takes precedence over any volumes in the template, with the same name.
+  ## => /opt/dolphinscheduler/logs
   persistentVolumeClaim:
     enabled: false
     accessModes:
@@ -320,14 +321,14 @@ worker:
   ## A claim in this list takes precedence over any volumes in the template, with the same name.
   persistentVolumeClaim:
     enabled: false
-    ## dolphinscheduler data volume
+    ## dolphinscheduler data volume => /tmp/dolphinscheduler
     dataPersistentVolume:
       enabled: false
       accessModes:
       - "ReadWriteOnce"
       storageClassName: "-"
       storage: "20Gi"
-    ## dolphinscheduler logs volume
+    ## dolphinscheduler logs volume => /opt/dolphinscheduler/logs
     logsPersistentVolume:
       enabled: false
       accessModes:
@@ -395,6 +396,7 @@ alert:
     successThreshold: "1"
   ## PersistentVolumeClaim represents a reference to a PersistentVolumeClaim in the same namespace.
   ## More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+  ## => /opt/dolphinscheduler/logs
   persistentVolumeClaim:
     enabled: false
     accessModes:
@@ -456,6 +458,7 @@ api:
     successThreshold: "1"
   ## PersistentVolumeClaim represents a reference to a PersistentVolumeClaim in the same namespace.
   ## More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+  ## => /opt/dolphinscheduler/logs
   persistentVolumeClaim:
     enabled: false
     accessModes:
