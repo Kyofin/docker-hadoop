@@ -1,14 +1,26 @@
+# 安装
+```shell
+kubectl apply -f . -n bigdata-local
+kubectl delete -f . -n bigdata-local  
+```
 # 注册be
 ```shell
-mysql -hdoris-fe-0.doris-fe-service -P9030 -uroot
- 
+
+export SQL="ALTER SYSTEM ADD BACKEND '"$POD_NAME".doris-be-service:9050'"
+echo $SQL > 1.sql
+mysql -h doris-fe-svc -P 9030 -u root < 1.sql
+
 ```
-执行sql语句。
+执行sql语句，查看注册的be。
 ```sql
-ALTER SYSTEM ADD BACKEND "doris-be-0.doris-be-service:9050";
-ALTER SYSTEM ADD BACKEND "doris-be-1.doris-be-service:9050";
-ALTER SYSTEM ADD BACKEND "doris-be-2.doris-be-service:9050";
 SHOW PROC '/backends';
+```
+
+# 清退be
+```shell
+export SQL="ALTER SYSTEM DECOMMISSION BACKEND  '"$POD_NAME".doris-be-service:9050'"
+echo $SQL > 2.sql
+mysql -h doris-fe-svc -P 9030 -u root < 2.sql
 ```
 
 
