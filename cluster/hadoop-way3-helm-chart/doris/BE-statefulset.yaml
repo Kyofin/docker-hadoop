@@ -32,13 +32,13 @@ spec:
 #      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: doris-be
-#          lifecycle:
+          lifecycle:
 #            postStart:
 #              exec:
 #                command: ["/bin/sh", "-c", "/opt/register_be.sh "]
-#            preStop:
-#              exec:
-#                command: ["/bin/sh", "-c", "/opt/decommision_be.sh "]
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "/opt/decommision_be.sh "]
           env:
             - name: POD_NAME
               valueFrom:
