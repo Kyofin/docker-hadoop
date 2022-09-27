@@ -1,0 +1,12 @@
+apiVersion: v1
+appVersion: 2.7.3
+description: Hbase Helm to deploy the distributed versions of warp10
+home: https://hadoop.apache.org/
+icon: http://hadoop.apache.org/images/hadoop-logo.jpg
+maintainers:
+- email: pierre.zemb.isen@gmnail.com
+  name: Pierre Zemb
+name: hbase
+sources:
+- https://github.com/apache/hadoop
+version: 1.0.4
