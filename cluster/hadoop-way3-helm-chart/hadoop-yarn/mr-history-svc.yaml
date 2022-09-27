@@ -1,0 +1,24 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bigdata-hadoop-mr-jobhistory
+  labels:
+    app: hadoop
+    component: mr-jobhistory
+    release: bigdata
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 19888
+    - name: rpc
+      protocol: TCP
+      port: 10020
+
+  selector:
+    app: hadoop
+    component: mr-jobhistory
+    release: bigdata
+  clusterIP: None
+  type: ClusterIP
+

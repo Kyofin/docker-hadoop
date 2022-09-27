@@ -1,0 +1,72 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: bigdata-hadoop-mr-jobhistory
+  labels:
+    app: hadoop
+    component: mr-jobhistory
+    release: bigdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hadoop
+      component: mr-jobhistory
+      release: bigdata
+  template:
+    metadata:
+      labels:
+        app: hadoop
+        component: mr-jobhistory
+        release: bigdata
+    spec:
+      volumes:
+        - name: hadoop-config
+          configMap:
+            name: bigdata-hadoop
+            defaultMode: 420
+      containers:
+        - name: mr-jobhistory
+          image: 'registry.mufankong.top/bigdata/poker/hadoop:2.7.2'
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+          command:
+            - /bin/bash
+            - /tmp/hadoop-config/bootstrap.sh
+            - '-d'
+          ports:
+            - name: web
+              containerPort: 19888
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: 10m
+              memory: 256Mi
+          volumeMounts:
+            - name: hadoop-config
+              mountPath: /tmp/hadoop-config
+          livenessProbe:
+            httpGet:
+              path: /ws/v1/history/info
+              port: 19888
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: /ws/v1/history/info
+              port: 19888
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+          imagePullPolicy: Always
+      terminationGracePeriodSeconds: 0
+      securityContext: {}
+
+  serviceName: bigdata-hadoop-mr-jobhistory
+  podManagementPolicy: OrderedReady
+
