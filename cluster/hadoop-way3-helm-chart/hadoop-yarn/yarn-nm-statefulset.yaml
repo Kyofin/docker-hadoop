@@ -69,6 +69,9 @@ spec:
               memory: 8Gi
           volumeMounts:
             - name: hadoop-config
+              mountPath: /usr/local/hadoop/jmx_config.yml
+              subPath: jmx_config.yml
+            - name: hadoop-config
               mountPath: /tmp/hadoop-config
             - name: nn-local-dir
               mountPath: /var/lib/hadoop-yarn/cache/root/nm-local-dir
