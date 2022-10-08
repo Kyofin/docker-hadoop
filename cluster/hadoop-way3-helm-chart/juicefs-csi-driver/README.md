@@ -1,7 +1,14 @@
 # 安装
 ```shell
 helm install juicefs-csi-driver .  -n bigdata-local
+```
+# 卸载
+```shell
 helm uninstall  juicefs-csi-driver  -n bigdata-local              
+ kubectl delete ClusterRoleBinding juicefs-csi-node-service-binding  
+ kubectl delete ClusterRoleBinding juicefs-csi-provisioner-binding  
+ kubectl delete ClusterRole juicefs-csi-external-node-service-role  
+ kubectl delete ClusterRole juicefs-csi-external-provisioner-role
 ```
 
 # 测试

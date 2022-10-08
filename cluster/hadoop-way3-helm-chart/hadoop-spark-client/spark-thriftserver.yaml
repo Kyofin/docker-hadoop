@@ -22,7 +22,7 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 10018
-            initialDelaySeconds: 10
+            initialDelaySeconds: 20
             timeoutSeconds: 2
           # todo 增加Fair调度和executor num，服务监控检查
           command: [ "/bin/sh","-c","/opt/spark-3.2.1-bin-hadoop2.7/sbin/start-thriftserver.sh    --master yarn;  tail -f /opt/spark-3.2.1-bin-hadoop2.7/logs/spark--org.apache.spark.sql.hive.thriftserver.HiveThriftServer2-1-$MY_POD_NAME.out; " ]

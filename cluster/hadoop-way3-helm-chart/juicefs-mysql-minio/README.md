@@ -8,3 +8,7 @@ docker run -p 9100:9100 -d -e  META_URL="mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLz
 -e   ACCESS_KEY="AKIAIOSFODNN7EXAMPLE"  \
 -e   SECRET_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" --privileged=true juicefs-mysql-minio:1.0.0-rc2-v2
 ```
+# 安装到k8s中
+```shell
+kubectl apply -f juicefs-mysql-minio.yaml -n bigdata-dev
+```
