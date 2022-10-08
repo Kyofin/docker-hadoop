@@ -1,3 +1,14 @@
+# 安装卸载
+```shell
+helm install grafana . -n bigdata-local  
+helm uninstall grafana -n bigdata-local  
+```
+
+# 默认管理员账号密码
+```yaml
+adminUser: admin
+adminPassword: strongpassword
+```
 # Grafana Helm Chart
 
 * Installs the web dashboarding system [Grafana](http://grafana.org/)
