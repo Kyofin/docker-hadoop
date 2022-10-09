@@ -3,8 +3,9 @@
 docker要设置内存大于8G。
 
 ## 介绍
-使用Standalone Hadoop可以在本地快速搭建hadoop环境，方便多版本hadoop调试开发。
-`Dockerfile_spark3`内置服务版本：
+该容器会集成spark3，元数据会用spark3内置的hive来存储到mysql中。并且spark3会集成hudi，可以用于测试spark读写hudi表。
+
+`Dockerfile_spark3-nohive-hudi`内置服务版本：
 - Jdk 1.8
 - Hadoop 2.7.3
 - Spark 3.1.2
