@@ -1,5 +1,5 @@
 rbac:
-  create: false
+  create: true
 
 podSecurityPolicy:
   enabled: false
@@ -1857,7 +1857,7 @@ serverFiles:
 # adds additional scrape configs to prometheus.yml
 # must be a string so you have to add a | after extraScrapeConfigs:
 # example adds prometheus-blackbox-exporter scrape config
-extraScrapeConfigs: |
+extraScrapeConfigs:
   # - job_name: 'prometheus-blackbox-exporter'
   #   metrics_path: /probe
   #   params:
@@ -1872,14 +1872,6 @@ extraScrapeConfigs: |
   #       target_label: instance
   #     - target_label: __address__
   #       replacement: prometheus-blackbox-exporter:9115
-  
-  # 增加对YARN RM、NM的采集
-  - job_name: hadoop-yarn-rm
-    static_configs:
-      - targets: [ 'bigdata-hadoop-yarn-rm:9200' ]
-  - job_name: hadoop-yarn-nm
-    static_configs:
-      - targets: [ 'bigdata-hadoop-yarn-nm-0.bigdata-hadoop-yarn-nm:9200','bigdata-hadoop-yarn-nm-1.bigdata-hadoop-yarn-nm:9200','bigdata-hadoop-yarn-nm-2.bigdata-hadoop-yarn-nm:9200','bigdata-hadoop-yarn-nm-3.bigdata-hadoop-yarn-nm:9200','bigdata-hadoop-yarn-nm-4.bigdata-hadoop-yarn-nm:9200' ]
 
 # Adds option to add alert_relabel_configs to avoid duplicate alerts in alertmanager
 # useful in H/A prometheus with different external labels but the same alerts

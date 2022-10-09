@@ -48,9 +48,6 @@ spec:
               memory: 256Mi
           volumeMounts:
             - name: hadoop-config
-              mountPath: /usr/local/hadoop/jmx_config.yml
-              subPath: jmx_config.yml
-            - name: hadoop-config
               mountPath: /tmp/hadoop-config
           livenessProbe:
             httpGet:
