@@ -128,7 +128,7 @@ data:
       </property>
       <property>
           <name>juicefs.meta</name>
-          <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs2_meta_minio</value>
+          <value>mysql://root:bigdata@(10.81.17.8:33066)/juicefs_k8s</value>
       </property>
       <property>
           <name>juicefs.cache-size</name>
@@ -173,11 +173,11 @@ data:
       </property>
       <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>bigdata-hadoop-mr-jobhistory-0.bigdata-hadoop-mr-jobhistory.bigdata-local.svc.cluster.local:10020</value>
+        <value>bigdata-hadoop-mr-jobhistory-0.bigdata-hadoop-mr-jobhistory.bigdata-dev.svc.cluster.local:10020</value>
       </property>
       <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>bigdata-hadoop-mr-jobhistory-0.bigdata-hadoop-mr-jobhistory.bigdata-local.svc.cluster.local:19888</value>
+        <value>bigdata-hadoop-mr-jobhistory-0.bigdata-hadoop-mr-jobhistory.bigdata-dev.svc.cluster.local:19888</value>
       </property>
      <property>
            <name>mapreduce.map.memory.mb</name>

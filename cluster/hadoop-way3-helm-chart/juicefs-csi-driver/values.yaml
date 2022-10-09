@@ -133,7 +133,7 @@ storageClasses:
     # -- The JuiceFS file system name.
     name: "juice"
     # -- Connection URL for metadata engine (e.g. Redis), using in Community edition. Read [this document](https://juicefs.com/docs/community/databases_for_metadata) for more information.
-    metaurl: "mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs_csi"
+    metaurl: "mysql://root:bigdata@(10.81.17.8:33066)/juicefs_csi_k8s"
     # -- Object storage type, such as `s3`, `gs`, `oss`, using in Community edition. Read [this document](https://juicefs.com/docs/community/how_to_setup_object_storage) for the full supported list.
     storage: "minio"
     # -- JuiceFS managed token, using in Cloud Service edition. Read [this document](https://juicefs.com/docs/cloud/metadata/#token-management) for more details.

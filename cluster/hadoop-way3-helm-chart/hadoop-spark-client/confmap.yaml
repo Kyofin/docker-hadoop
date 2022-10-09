@@ -22,7 +22,7 @@ data:
          </property>
          <property>
              <name>juicefs.meta</name>
-             <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs2_meta_minio</value>
+             <value>mysql://root:bigdata@(10.81.17.8:33066)/juicefs_k8s</value>
          </property>
          <property>
              <name>juicefs.cache-size</name>

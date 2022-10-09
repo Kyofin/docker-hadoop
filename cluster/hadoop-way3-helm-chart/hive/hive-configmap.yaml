@@ -23,7 +23,7 @@ data:
       </property>
       <property>
           <name>juicefs.meta</name>
-          <value>mysql://root:eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT@(mysql-01:3306)/juicefs2_meta_minio</value>
+          <value>mysql://root:bigdata@(10.81.17.8:33066)/juicefs_k8s</value>
       </property>
       <property>
           <name>juicefs.cache-size</name>
@@ -47,9 +47,9 @@ data:
 
           <property><name>hive.metastore.uris</name><value>thrift://hive-metastore-service:9083</value></property>
           <property><name>datanucleus.autoCreateSchema</name><value>false</value></property>
-          <property><name>javax.jdo.option.ConnectionURL</name><value>jdbc:mysql://mysql-01/hive2_3_9?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;rewriteBatchedStatements=true&amp;serverTimezone=Asia/Shanghai</value></property>
+          <property><name>javax.jdo.option.ConnectionURL</name><value>jdbc:mysql://10.81.17.8:33066/hive2_3_9_k8s?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;rewriteBatchedStatements=true&amp;serverTimezone=Asia/Shanghai</value></property>
           <property><name>javax.jdo.option.ConnectionDriverName</name><value>com.mysql.jdbc.Driver</value></property>
-          <property><name>javax.jdo.option.ConnectionPassword</name><value>eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT</value></property>
+          <property><name>javax.jdo.option.ConnectionPassword</name><value>bigdata</value></property>
           <property><name>javax.jdo.option.ConnectionUserName</name><value>root</value></property>
           <property>
             <name>hive.metastore.warehouse.dir</name>

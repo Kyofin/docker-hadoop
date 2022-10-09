@@ -20,5 +20,5 @@ spec:
           image: registry.mufankong.top/bigdata/hadoop-hive-metastore:2.3.9
           imagePullPolicy: Always
           command: ["/opt/apache-hive-2.3.9-bin/bin/schematool"]
-          args: ["--verbose" ,"-initSchema" , "-dbType", "mysql", "-userName", "root", "-passWord", "eWJmP7yvpccHCtmVb61Gxl2XLzIrRgmT"]
+          args: ["--verbose" ,"-initSchema" , "-dbType", "mysql", "-userName", "root", "-passWord", "bigdata"]
       restartPolicy: Never
