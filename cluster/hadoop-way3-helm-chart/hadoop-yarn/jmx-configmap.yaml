@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jmx-configmap
+  labels:
+    app: hadoop
+data:
+  yarn-nodemanager-config.yml: |-
+    hostPort: localhost:8001
+    lowercaseOutputName: false
+    rules:
+      - pattern: ".*"
+    ssl: false
+    startDelaySeconds: 30
+  yarn-resourcemanager-config.yml: |-
+    hostPort: localhost:8002
+    lowercaseOutputName: false
+    rules:
+      - pattern: ".*"
+    ssl: false
+    startDelaySeconds: 30

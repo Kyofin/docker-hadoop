@@ -73,3 +73,8 @@ docker push registry.mufankong.top/bigdata/grafana/loki:2.3.0
 docker pull grafana/promtail:2.3.0
 docker tag grafana/promtail:2.3.0 registry.mufankong.top/bigdata/grafana/promtail:2.3.0
 docker push registry.mufankong.top/bigdata/grafana/promtail:2.3.0
+
+# jmx exporter
+docker pull ccr.ccs.tencentyun.com/k8s-big-data/jmx-prometheus-exporter:0.12.0-openjdk
+docker tag ccr.ccs.tencentyun.com/k8s-big-data/jmx-prometheus-exporter:0.12.0-openjdk registry.mufankong.top/bigdata/jmx-prometheus-exporter:0.12.0-openjdk
+docker push registry.mufankong.top/bigdata/jmx-prometheus-exporter:0.12.0-openjdk

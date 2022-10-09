@@ -21,11 +21,45 @@ spec:
         release: bigdata
     spec:
       volumes:
+        - name: jmx-config
+          configMap:
+            name: jmx-configmap
         - name: hadoop-config
           configMap:
             name: bigdata-hadoop
             defaultMode: 420
       containers:
+        - name: jmx-exporter
+          env:
+            - name: SERVICE_PORT
+              value: "8007"
+          image: "registry.mufankong.top/bigdata/jmx-prometheus-exporter:0.12.0-openjdk"
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 8007
+          volumeMounts:
+            - name: jmx-config
+              mountPath: /opt/jmx_exporter/config.yml
+              subPath: yarn-resourcemanager-config.yml
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: 8007
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
+          readinessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: 8007
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
         - name: yarn-rm
           image: 'registry.mufankong.top/bigdata/poker/hadoop:2.7.2'
           env:
