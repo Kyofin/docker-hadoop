@@ -1,5 +1,5 @@
 rbac:
-  create: true
+  create: false
 
 podSecurityPolicy:
   enabled: false
@@ -11,19 +11,19 @@ imagePullSecrets:
 ##
 serviceAccounts:
   alertmanager:
-    create: true
+    create: false
     name:
     annotations: {}
   nodeExporter:
-    create: true
+    create: false
     name:
     annotations: {}
   pushgateway:
-    create: true
+    create: false
     name:
     annotations: {}
   server:
-    create: true
+    create: false
     name:
     annotations: {}
 
@@ -1857,7 +1857,15 @@ serverFiles:
 # adds additional scrape configs to prometheus.yml
 # must be a string so you have to add a | after extraScrapeConfigs:
 # example adds prometheus-blackbox-exporter scrape config
-extraScrapeConfigs:
+extraScrapeConfigs: |
+  - job_name: 'DolphinScheduler'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - 'dolphinscheduler-master-0.dolphinscheduler-master-headless.bigdata-dev.svc.cluster.local:5679' # Change the address to the address of DolphinScheduler master server
+          - 'dolphinscheduler-worker-headless.bigdata-dev:1235' # Change the address to the address of DolphinScheduler worker server
+
   # - job_name: 'prometheus-blackbox-exporter'
   #   metrics_path: /probe
   #   params:
