@@ -99,7 +99,7 @@ data:
       echo "log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout" >> $LOG4J_PROPERTIES
       echo "log4j.appender.CONSOLE.layout.ConversionPattern=%d{ISO8601} [myid:%X{myid}] - %-5p [%t:%C{1}@%L] - %m%n" >> $LOG4J_PROPERTIES
 
-      if [ -n "$JMXDISABLE" ]
+      if [[  "$JMXDISABLE" == "true" ]]
       then
           MAIN=org.apache.zookeeper.server.quorum.QuorumPeerMain
       else

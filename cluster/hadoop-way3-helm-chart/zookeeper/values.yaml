@@ -134,11 +134,11 @@ persistence:
 exporters:
 
   jmx:
-    enabled: false
+    enabled: true
     image:
-      repository: sscaling/jmx-prometheus-exporter
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
+      repository: registry.mufankong.top/bigdata/jmx-prometheus-exporter
+      tag: 0.12.0-openjdk
+      pullPolicy: Always
     config:
       lowercaseOutputName: false
       ## ref: https://github.com/prometheus/jmx_exporter/blob/master/example_configs/zookeeper.yaml
@@ -255,6 +255,7 @@ env:
   ## Options related to JMX exporter.
   ## ref: https://github.com/apache/zookeeper/blob/master/bin/zkServer.sh#L36
   JMXAUTH: "false"
+  # 如果zookeeper启动时要开启jmx，JMXDISABLE设置为false
   JMXDISABLE: "false"
   JMXPORT: 1099
   JMXSSL: "false"
