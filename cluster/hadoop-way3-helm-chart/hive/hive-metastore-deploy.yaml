@@ -15,6 +15,37 @@ spec:
         app: hive-metastore
     spec:
       containers:
+        - name: jmx-exporter
+          env:
+            - name: SERVICE_PORT
+              value: "8007"
+          image: "registry.mufankong.top/bigdata/jmx-prometheus-exporter:0.12.0-openjdk"
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 8007
+          volumeMounts:
+            - name: jmx-config
+              mountPath: /opt/jmx_exporter/config.yml
+              subPath: hive-metastore-config.yml
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: 8007
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
+          readinessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: 8007
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
         - name: hive-metastore
           livenessProbe:
             tcpSocket:
@@ -37,11 +68,17 @@ spec:
             - name: metastore-cfg-vol
               mountPath:  /opt/apache-hive-2.3.9-bin/conf/core-site.xml
               subPath: core-site.xml
+            - name: metastore-cfg-vol
+              mountPath: /opt/apache-hive-2.3.9-bin/conf/hive-env.sh
+              subPath: hive-env.sh
           resources:
             requests:
               memory: "2G"
               cpu: "2"
       volumes:
+        - name: jmx-config
+          configMap:
+            name: hive-jmx-configmap
         - name: metastore-cfg-vol
           configMap:
             name: hive-cfg
