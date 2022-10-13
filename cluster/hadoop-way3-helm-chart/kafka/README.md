@@ -4,6 +4,11 @@
 
 [Kafka](https://kafka.apache.org/) is a distributed streaming platform used for building real-time data pipelines and streaming apps. It is horizontally scalable, fault-tolerant, wicked fast, and runs in production in thousands of companies.
 
+## 安装卸载
+```shell
+helm install kafka . -n bigdata-dev 
+helm uninstall kafka  -n bigdata-dev 
+```
 ## TL;DR
 
 ```console
