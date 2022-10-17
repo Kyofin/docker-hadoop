@@ -1866,13 +1866,13 @@ extraScrapeConfigs: |
           - 'dolphinscheduler-master-0.dolphinscheduler-master-headless.bigdata-dev.svc.cluster.local:5679' # Change the address to the address of DolphinScheduler master server
           - 'dolphinscheduler-worker-headless.bigdata-dev:1235' # Change the address to the address of DolphinScheduler worker server
   - job_name: 'zookeeper'
-    metrics_path: '/actuator/zookeeper'
-    scrape_interval: 5s
+    scrape_interval: 15s
+    scrape_timeout: 15s
     static_configs:
       - targets:
           - 'zookeeper.bigdata-dev:9404'
+          - 'zookeeper.bigdata-dev:9141'
   - job_name: 'yarn'
-    metrics_path: '/actuator/yarn'
     scrape_interval: 5s
     static_configs:
       - targets:
@@ -1880,6 +1880,11 @@ extraScrapeConfigs: |
           - 'bigdata-hadoop-yarn-nm-1.bigdata-hadoop-yarn-nm.bigdata-dev.svc.cluster.local:8007'
           - 'bigdata-hadoop-yarn-nm-2.bigdata-hadoop-yarn-nm.bigdata-dev.svc.cluster.local:8007'
           - 'bigdata-hadoop-yarn-rm-0.bigdata-hadoop-yarn-rm.bigdata-dev.svc.cluster.local:8007'
+  - job_name: 'hive'
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - 'hive-metastore-service.bigdata-dev:8007'
 
   # - job_name: 'prometheus-blackbox-exporter'
   #   metrics_path: /probe
