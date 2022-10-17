@@ -7,7 +7,9 @@ metadata:
 data:
   bootstrap.sh: |
     #!/bin/bash
-
+    set -ex
+    set -o pipefail
+    
     : ${HADOOP_PREFIX:=/usr/local/hadoop}
 
     . $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
@@ -56,7 +58,18 @@ data:
       $HADOOP_PREFIX/sbin/hadoop-daemon.sh start datanode
     fi
 
-    if [[ "${HOSTNAME}" =~ "yarn-rm" ]]; then
+    if [[ "${HOSTNAME}" =~ "ks-k8s-master-1" ]]; then    
+      #  替换RM_ID
+      sed -ie 's/${RM_ID}/rm2/g' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
+      cp ${CONFIG_DIR}/start-yarn-rm.sh $HADOOP_PREFIX/sbin/
+      cd $HADOOP_PREFIX/sbin
+      chmod +x start-yarn-rm.sh
+      ./start-yarn-rm.sh
+    fi
+    
+    if [[ "${HOSTNAME}" =~ "ks-k8s-master-0" ]]; then
+      #  替换RM_ID
+      sed -ie 's/${RM_ID}/rm1/g' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
       cp ${CONFIG_DIR}/start-yarn-rm.sh $HADOOP_PREFIX/sbin/
       cd $HADOOP_PREFIX/sbin
       chmod +x start-yarn-rm.sh
@@ -71,7 +84,7 @@ data:
       ./start-mr-jobhistory.sh
     fi
 
-    if [[ "${HOSTNAME}" =~ "yarn-nm" ]]; then
+    if [[ "${YARN_ROLE}" =~ "yarn-nm" ]]; then
       sed -i '/<\/configuration>/d' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
       cat >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml <<- EOM
       <property>
@@ -378,25 +391,91 @@ data:
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
     <configuration>
-      <property>
-        <name>yarn.resourcemanager.hostname</name>
-        <value>bigdata-hadoop-yarn-rm</value>
-      </property>
-
-      <!-- Bind to all interfaces -->
-      <property>
-        <name>yarn.resourcemanager.bind-host</name>
-        <value>0.0.0.0</value>
-      </property>
-      <property>
-        <name>yarn.nodemanager.bind-host</name>
-        <value>0.0.0.0</value>
-      </property>
-      <property>
-        <name>yarn.timeline-service.bind-host</name>
-        <value>0.0.0.0</value>
-      </property>
-      <!-- /Bind to all interfaces -->
+        
+        <!--    HA相关开始-->
+        <property>
+            <name>yarn.resourcemanager.ha.enabled</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.recovery.enabled</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.store.class</name>
+            <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.zk-address</name>
+            <value>zookeeper-0.zookeeper-headless:2181,zookeeper-1.zookeeper-headless:2181,zookeeper-2.zookeeper-headless:2181</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.ha.automatic-failover.embedded</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.cluster-id</name>
+            <value>yarn1-cluster</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.zk-state-store.parent-path</name>
+            <value>/rmstore-yarn1</value>
+        </property>
+        
+        <property>
+            <name>yarn.resourcemanager.address.rm1</name>
+            <value>ks-k8s-master-0:8032</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.resource-tracker.address.rm1</name>
+            <value>ks-k8s-master-0:8031</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.scheduler.address.rm1</name>
+            <value>ks-k8s-master-0:8030</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.admin.address.rm1</name>
+            <value>ks-k8s-master-0:8033</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.webapp.address.rm1</name>
+            <value>ks-k8s-master-0:8088</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.address.rm2</name>
+            <value>ks-k8s-master-1:8032</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.resource-tracker.address.rm2</name>
+            <value>ks-k8s-master-1:8031</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.scheduler.address.rm2</name>
+            <value>ks-k8s-master-1:8030</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.admin.address.rm2</name>
+            <value>ks-k8s-master-1:8033</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.webapp.address.rm2</name>
+            <value>ks-k8s-master-1:8088</value>
+        </property>
+        <!--    ha.id要指定启动RM的节点对应的rm别名。即rm1或者rm2 -->
+        <property>
+            <name>yarn.resourcemanager.ha.id</name>
+            <value>${RM_ID}</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.ha.rm-ids</name>
+            <value>rm1,rm2</value>
+        </property>
+        <!--    HA相关结束-->
 
       <property>
         <name>yarn.nodemanager.vmem-check-enabled</name>
