@@ -195,9 +195,9 @@ exporters:
   ## - https://github.com/carlpett/zookeeper_exporter
   ## - https://hub.docker.com/r/josdotso/zookeeper-exporter/
   ## - https://www.datadoghq.com/blog/monitoring-kafka-performance-metrics/#zookeeper-metrics
-    enabled: false
+    enabled: true
     image:
-      repository: josdotso/zookeeper-exporter
+      repository: registry.mufankong.top/bigdata/zookeeper-exporter
       tag: v1.1.2
       pullPolicy: IfNotPresent
     config:
