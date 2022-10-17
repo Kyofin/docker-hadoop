@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: prestocluster-sample-coordinator-service
+  namespace: presto-system
+  labels:
+    app: presto
+    presto_cr: prestocluster-sample
+    role: coordinator_service
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: presto
+    presto_cr: prestocluster-sample
+    role: coordinator
+  externalIPs:
+    - 172.17.195.77

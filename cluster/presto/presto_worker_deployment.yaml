@@ -1,0 +1,53 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: prestocluster-sample-worker
+  namespace: presto-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: presto
+      presto_cr: prestocluster-sample
+      role: worker
+  template:
+    metadata:
+      labels:
+        app: presto
+        presto_cr: prestocluster-sample
+        role: worker
+    spec:
+      volumes:
+        - name: prestocluster-sample-worker-config-volume
+          configMap:
+            name: prestocluster-sample-worker-config
+            items:
+              - key: config.properties
+                path: config.properties
+              - key: jvm.config
+                path: jvm.config
+              - key: node.properties
+                path: node.properties
+              - key: tpcds
+                path: catalog/tpcds.properties
+              - key: hive
+                path: catalog/hive.properties
+      containers:
+        - name: prestocluster-sample-worker
+          image: jiamingmai/prestodb:v0.0.5
+          command:
+            - /bin/sh
+            - -c
+            - cp -r /opt/presto/etc-template /opt/presto/etc && /opt/presto/bin/launcher start && tail -f /opt/presto/etc-template/config.properties
+          ports:
+            - name: presto
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "1000m"
+            limits:
+              cpu: "2000m"
+          volumeMounts:
+            - name: prestocluster-sample-worker-config-volume
+              mountPath: /opt/presto/etc-template

@@ -1,0 +1,30 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: prestocluster-sample-worker-config
+  namespace: presto-system
+  labels:
+    app: prestocluster-sample
+data:
+  config.properties: |-
+    node.environment=test
+    http-server.http.port=8080
+    discovery.uri=http://prestocluster-sample-coordinator-service:8080
+  jvm.config: |-
+    -server
+    -XX:+UseG1GC
+    -Xmx1G
+    -Djdk.attach.allowAttachSelf=true
+  node.properties: |-
+    node.environment=test
+    node.data-dir=/opt/presto/data
+  tpcds: |-
+    connector.name=tpcds
+  hive: |-
+    cache.alluxio.max-cache-size=1GB
+    cache.base-directory=file:///tmp/alluxio
+    cache.enabled=true
+    cache.type=ALLUXIO
+    connector.name=hive-hadoop2
+    hive.metastore.uri=thrift://172.17.195.73:9083
+    hive.node-selection-strategy=SOFT_AFFINITY
